@@ -171,7 +171,7 @@ Add `android_island_bar` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  android_island_bar: ^0.2.2
+  android_island_bar: ^0.2.3
 ```
 
 Wrap your root application inside `MaterialApp.builder`:

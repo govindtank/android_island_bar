@@ -1,7 +1,7 @@
 name: android_island_bar
 description: >-
   Unified cross-platform Dynamic Island status bar for Android, iOS, and Web with hardware cutout snapping, multi-task split mode, rubber-band drag, and presets.
-version: 0.2.2
+version: 0.2.3
 homepage: https://github.com/govindtank/android_island_bar
 repository: https://github.com/govindtank/android_island_bar
 issue_tracker: https://github.com/govindtank/android_island_bar/issues
