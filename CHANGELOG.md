@@ -1,3 +1,8 @@
+## 0.2.2
+
+* **Corrected Buy Me A Coffee URL:** Updated donation target to `buymeacoffee.com/govindtanko` in `pubspec.yaml` and `README.md`.
+* **Redesigned Hero Graphic Showcase:** Completely redesigned `hero_showcase.svg` with spacious card architecture, generous inner margins (≥20px clearance), and elimination of all long text strings that bypassed container borders.
+
 ## 0.2.1
 
 * **Fixed Expanded View Closing Prematurely:**

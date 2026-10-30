@@ -6,7 +6,7 @@
   <a href="https://govindtank.github.io/android_island_bar/"><img src="https://img.shields.io/badge/Live_Demo-Try_in_Browser-00E676?style=flat-square&logo=googlechrome&logoColor=white" alt="Live Demo"></a>
   <a href="https://github.com/govindtank/android_island_bar"><img src="https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20web%20%7C%20macos%20%7C%20windows-blue?style=flat-square" alt="Platform"></a>
   <a href="https://github.com/govindtank/android_island_bar/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
-  <a href="https://buymeacoffee.com/govindtank"><img src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg?style=flat-square&logo=buymeacoffee" alt="Buy Me A Coffee"></a>
+  <a href="https://buymeacoffee.com/govindtanko"><img src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg?style=flat-square&logo=buymeacoffee" alt="Buy Me A Coffee"></a>
   <a href="https://github.com/sponsors/govindtank"><img src="https://img.shields.io/badge/Sponsor-GitHub-ea4aaa.svg?style=flat-square&logo=githubsponsors" alt="GitHub Sponsors"></a>
 </p>
 
@@ -171,7 +171,7 @@ Add `android_island_bar` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  android_island_bar: ^0.2.1
+  android_island_bar: ^0.2.2
 ```
 
 Wrap your root application inside `MaterialApp.builder`:
@@ -234,7 +234,7 @@ IslandBarOverlay(
 
 If this library saves you time or powers your application, consider supporting ongoing development:
 
-* **Buy Me A Coffee:** [buymeacoffee.com/govindtank](https://buymeacoffee.com/govindtank)
+* **Buy Me A Coffee:** [buymeacoffee.com/govindtanko](https://buymeacoffee.com/govindtanko)
 * **GitHub Sponsors:** [github.com/sponsors/govindtank](https://github.com/govindtank)
 
 ---
