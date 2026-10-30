@@ -97,6 +97,13 @@ void main() {
       controller.expand();
       expect(controller.state, IslandState.expanded);
 
+      // Verify that calling show/update with new progress while expanded PRESERVES expanded state!
+      controller.show(IslandItem.progress(
+        title: 'Download file',
+        progress: 0.46,
+      ));
+      expect(controller.state, IslandState.expanded);
+
       controller.collapse();
       expect(controller.state, IslandState.compact);
 

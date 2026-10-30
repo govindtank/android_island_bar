@@ -14,12 +14,22 @@ class AndroidIslandBarController extends ChangeNotifier {
 
   final List<IslandItem> _items = <IslandItem>[];
   IslandState _state = IslandState.hidden;
+  String? _expandedItemId;
   Timer? _dismissTimer;
   CutoutInfo _cutoutInfo = CutoutInfo.empty;
   bool _cutoutLoaded = false;
 
   /// Currently active primary item.
   IslandItem? get primaryItem => _items.isNotEmpty ? _items.first : null;
+
+  /// Currently expanded item when in [IslandState.expanded].
+  IslandItem? get expandedItem {
+    if (_expandedItemId != null) {
+      final match = _items.where((it) => it.id == _expandedItemId);
+      if (match.isNotEmpty) return match.first;
+    }
+    return primaryItem;
+  }
 
   /// Secondary item displayed in split bubble mode.
   IslandItem? get secondaryItem => _items.length > 1 ? _items[1] : null;
@@ -48,8 +58,6 @@ class AndroidIslandBarController extends ChangeNotifier {
 
   /// Displays an [IslandItem]. If another item exists, enters split mode.
   void show(IslandItem item) {
-    _dismissTimer?.cancel();
-
     final existingIndex = _items.indexWhere((it) => it.id == item.id);
     if (existingIndex >= 0) {
       _items[existingIndex] = item;
@@ -58,6 +66,13 @@ class AndroidIslandBarController extends ChangeNotifier {
       _items.sort((a, b) => b.priority.compareTo(a.priority));
     }
 
+    // Preserve expanded state if currently expanded
+    if (_state == IslandState.expanded) {
+      notifyListeners();
+      return;
+    }
+
+    _dismissTimer?.cancel();
     if (_items.length > 1) {
       _state = IslandState.split;
     } else {
@@ -68,7 +83,7 @@ class AndroidIslandBarController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Updates an active item in-place without triggering re-entry animations.
+  /// Updates an active item in-place without triggering re-entry animations or collapsing expanded view.
   void update(IslandItem item) {
     final index = _items.indexWhere((it) => it.id == item.id);
     if (index >= 0) {
@@ -84,11 +99,22 @@ class AndroidIslandBarController extends ChangeNotifier {
     show(item);
   }
 
+  /// Promotes a secondary item to primary and expands it.
+  void promoteAndExpand(String id) {
+    final index = _items.indexWhere((it) => it.id == id);
+    if (index > 0) {
+      final item = _items.removeAt(index);
+      _items.insert(0, item);
+    }
+    expand(id);
+  }
+
   /// Dismisses an item by its [id], or the top item if [id] is null.
   void dismiss([String? id]) {
     _dismissTimer?.cancel();
     if (_items.isEmpty) {
       _state = IslandState.hidden;
+      _expandedItemId = null;
       notifyListeners();
       return;
     }
@@ -106,11 +132,14 @@ class AndroidIslandBarController extends ChangeNotifier {
 
     if (_items.isEmpty) {
       _state = IslandState.hidden;
+      _expandedItemId = null;
     } else if (_items.length == 1) {
       _state = IslandState.compact;
+      _expandedItemId = null;
       _scheduleDismissal(_items.first);
     } else {
       _state = IslandState.split;
+      _expandedItemId = null;
       _scheduleDismissal(_items.first);
     }
 
@@ -125,14 +154,17 @@ class AndroidIslandBarController extends ChangeNotifier {
     }
     _items.clear();
     _state = IslandState.hidden;
+    _expandedItemId = null;
     notifyListeners();
   }
 
-  /// Expands the primary island into its full interactive card.
-  void expand() {
+  /// Expands the primary or specified island into its full interactive card.
+  void expand([String? id]) {
     if (_items.isEmpty) return;
+    _dismissTimer?.cancel(); // Freeze auto-dismiss while expanded!
     _state = IslandState.expanded;
-    primaryItem?.onExpanded?.call();
+    _expandedItemId = id ?? primaryItem?.id;
+    expandedItem?.onExpanded?.call();
     notifyListeners();
   }
 
@@ -142,20 +174,26 @@ class AndroidIslandBarController extends ChangeNotifier {
       _state = IslandState.hidden;
     } else if (_items.length > 1) {
       _state = IslandState.split;
+      _scheduleDismissal(_items.first);
     } else {
       _state = IslandState.compact;
+      _scheduleDismissal(_items.first);
     }
+    _expandedItemId = null;
     notifyListeners();
   }
 
   /// Stashes (minimizes) the island until reopened.
   void stash() {
     _state = IslandState.hidden;
+    _expandedItemId = null;
     notifyListeners();
   }
 
   void _scheduleDismissal(IslandItem item) {
-    if (item.duration != null) {
+    // Only schedule dismissal if not currently expanded
+    if (_state != IslandState.expanded && item.duration != null) {
+      _dismissTimer?.cancel();
       _dismissTimer = Timer(item.duration!, () {
         dismiss(item.id);
       });

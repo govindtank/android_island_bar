@@ -31,13 +31,11 @@ class _IslandBarShowcaseAppState extends State<IslandBarShowcaseApp> {
   @override
   void initState() {
     super.initState();
-    // Start continuous music progress ticker for realism
+    // Continuous progress ticker updating island without rebuilding root tree
     _ticker = Timer.periodic(const Duration(milliseconds: 1000), (_) {
       if (_isPlaying) {
-        setState(() {
-          _musicProgress += 0.005;
-          if (_musicProgress > 1.0) _musicProgress = 0.0;
-        });
+        _musicProgress += 0.005;
+        if (_musicProgress > 1.0) _musicProgress = 0.0;
       }
     });
   }
@@ -62,9 +60,7 @@ class _IslandBarShowcaseAppState extends State<IslandBarShowcaseApp> {
         durationText: '3:50',
         accentColor: const Color(0xFF00E676),
         onPlayPause: () {
-          setState(() {
-            _isPlaying = !_isPlaying;
-          });
+          _isPlaying = !_isPlaying;
           _triggerMedia();
         },
         onNext: () {
@@ -83,27 +79,29 @@ class _IslandBarShowcaseAppState extends State<IslandBarShowcaseApp> {
     _timerSecondsRemaining = 240;
     _isTimerPaused = false;
 
-    void updateTimerItem() {
-      AndroidIslandBar.show(
-        IslandItem.timer(
-          id: 'countdown_timer',
-          label: 'Pasta Timer',
-          remaining: Duration(seconds: _timerSecondsRemaining),
-          totalDuration: Duration(seconds: _timerTotalSeconds),
-          isPaused: _isTimerPaused,
-          accentColor: const Color(0xFFFF9100),
-          onPauseResume: () {
-            setState(() {
-              _isTimerPaused = !_isTimerPaused;
-            });
-            updateTimerItem();
-          },
-          onCancel: () {
-            _countdownTimer?.cancel();
-            AndroidIslandBar.dismiss('countdown_timer');
-          },
-        ),
+    void updateTimerItem({bool isInitial = false}) {
+      final timerItem = IslandItem.timer(
+        id: 'countdown_timer',
+        label: 'Pasta Timer',
+        remaining: Duration(seconds: _timerSecondsRemaining),
+        totalDuration: Duration(seconds: _timerTotalSeconds),
+        isPaused: _isTimerPaused,
+        accentColor: const Color(0xFFFF9100),
+        onPauseResume: () {
+          _isTimerPaused = !_isTimerPaused;
+          updateTimerItem();
+        },
+        onCancel: () {
+          _countdownTimer?.cancel();
+          AndroidIslandBar.dismiss('countdown_timer');
+        },
       );
+
+      if (isInitial) {
+        AndroidIslandBar.show(timerItem);
+      } else {
+        AndroidIslandBar.update(timerItem);
+      }
     }
 
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -121,27 +119,31 @@ class _IslandBarShowcaseAppState extends State<IslandBarShowcaseApp> {
       }
     });
 
-    updateTimerItem();
+    updateTimerItem(isInitial: true);
   }
 
   void _triggerDownload() {
     _downloadTimer?.cancel();
     _downloadProgress = 0.05;
 
-    void updateProgressItem() {
-      AndroidIslandBar.show(
-        IslandItem.progress(
-          id: 'app_download',
-          title: 'Firmware_OTA_v2.4.zip',
-          subtitle: '48.2 MB / 114 MB • 4.2 MB/s',
-          progress: _downloadProgress,
-          accentColor: const Color(0xFF29B6F6),
-          onCancel: () {
-            _downloadTimer?.cancel();
-            AndroidIslandBar.dismiss('app_download');
-          },
-        ),
+    void updateProgressItem({bool isInitial = false}) {
+      final progressItem = IslandItem.progress(
+        id: 'app_download',
+        title: 'Firmware_OTA_v2.4.zip',
+        subtitle: '48.2 MB / 114 MB • 4.2 MB/s',
+        progress: _downloadProgress,
+        accentColor: const Color(0xFF29B6F6),
+        onCancel: () {
+          _downloadTimer?.cancel();
+          AndroidIslandBar.dismiss('app_download');
+        },
       );
+
+      if (isInitial) {
+        AndroidIslandBar.show(progressItem);
+      } else {
+        AndroidIslandBar.update(progressItem);
+      }
     }
 
     _downloadTimer = Timer.periodic(const Duration(milliseconds: 300), (timer) {
@@ -159,7 +161,7 @@ class _IslandBarShowcaseAppState extends State<IslandBarShowcaseApp> {
       }
     });
 
-    updateProgressItem();
+    updateProgressItem(isInitial: true);
   }
 
   void _triggerOTPAlert() {

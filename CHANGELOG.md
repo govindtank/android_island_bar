@@ -1,3 +1,13 @@
+## 0.2.1
+
+* **Fixed Expanded View Closing Prematurely:**
+  * Fixed hit-testing in `IslandPill` and `IslandOverlay`: inner taps on expanded card padding and buttons now stay opaque and never bubble through to the backdrop dismiss listener.
+  * Preserved expanded state during continuous updates (e.g. countdown timers, download progression, audio scrubs). Auto-dismiss timers are safely paused while the island is expanded.
+  * Secondary split bubbles now promote the selected item to primary before expanding cleanly.
+* **Pixel-Perfect Widget Border Wrapping:**
+  * Added strict SVG `<clipPath>` definitions to all showcase assets (`hero_showcase.svg`, `infographic.svg`) and generous inner padding to ensure no text, waveform bars, or badges bleed over the widget's corner borders.
+* **Performance:** Eliminated root widget rebuilds in the showcase app by switching ticking streams to in-place island updates.
+
 ## 0.2.0
 
 * **Cross-Platform Support (Android, iOS & Web):**

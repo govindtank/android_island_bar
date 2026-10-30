@@ -40,9 +40,12 @@ class _IslandPillState extends State<IslandPill> {
 
   @override
   Widget build(BuildContext context) {
-    final item = widget.controller.primaryItem;
-    final secondary = widget.controller.secondaryItem;
     final state = widget.controller.state;
+    final primary = widget.controller.primaryItem;
+    final secondary = widget.controller.secondaryItem;
+    final item = state == IslandState.expanded
+        ? (widget.controller.expandedItem ?? primary)
+        : primary;
 
     if (item == null || state == IslandState.hidden) {
       return const SizedBox.shrink();
@@ -61,7 +64,7 @@ class _IslandPillState extends State<IslandPill> {
 
     if (isExpanded) {
       targetWidth =
-          (screenWidth - 32.0).clamp(240.0, widget.theme.expandedMaxWidth);
+          (screenWidth - 32.0).clamp(260.0, widget.theme.expandedMaxWidth);
       targetHeight = widget.theme.expandedMaxHeight +
           (_isDragging ? _dragOffset * 0.3 : 0.0);
       targetRadius = widget.theme.expandedBorderRadius;
@@ -75,6 +78,7 @@ class _IslandPillState extends State<IslandPill> {
     }
 
     return GestureDetector(
+      behavior: HitTestBehavior.opaque,
       onVerticalDragStart: (_) {
         setState(() {
           _isDragging = true;
@@ -84,19 +88,19 @@ class _IslandPillState extends State<IslandPill> {
       onVerticalDragUpdate: (details) {
         setState(() {
           _dragOffset += details.primaryDelta ?? 0.0;
-          if (_dragOffset < -40.0 && !isExpanded) {
+          if (_dragOffset < -50.0 && !isExpanded) {
             // Swipe up to stash
             _isDragging = false;
             _dragOffset = 0.0;
             _triggerHaptic();
             widget.controller.stash();
-          } else if (_dragOffset > 45.0 && !isExpanded) {
+          } else if (_dragOffset > 50.0 && !isExpanded) {
             // Drag down past threshold to expand
             _isDragging = false;
             _dragOffset = 0.0;
             _triggerHaptic();
-            widget.controller.expand();
-          } else if (_dragOffset < -30.0 && isExpanded) {
+            widget.controller.expand(item.id);
+          } else if (_dragOffset < -60.0 && isExpanded) {
             // Swipe up to collapse
             _isDragging = false;
             _dragOffset = 0.0;
@@ -111,15 +115,13 @@ class _IslandPillState extends State<IslandPill> {
           _dragOffset = 0.0;
         });
       },
-      onTap: () {
-        _triggerHaptic();
-        if (isExpanded) {
-          widget.controller.collapse();
-        } else {
-          item.onTap?.call();
-          widget.controller.expand();
-        }
-      },
+      onTap: isExpanded
+          ? null
+          : () {
+              _triggerHaptic();
+              item.onTap?.call();
+              widget.controller.expand(item.id);
+            },
       child: Row(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -133,9 +135,6 @@ class _IslandPillState extends State<IslandPill> {
             width: targetWidth,
             constraints: BoxConstraints(
               minHeight: targetHeight,
-              maxHeight: isExpanded
-                  ? widget.theme.expandedMaxHeight + 40
-                  : targetHeight,
             ),
             padding: isExpanded
                 ? widget.theme.expandedPadding
@@ -169,11 +168,10 @@ class _IslandPillState extends State<IslandPill> {
           if (isSplit && !isExpanded) ...[
             const SizedBox(width: 8),
             GestureDetector(
+              behavior: HitTestBehavior.opaque,
               onTap: () {
                 _triggerHaptic();
-                // Switch focus to secondary item and expand
-                widget.controller.show(secondary);
-                widget.controller.expand();
+                widget.controller.promoteAndExpand(secondary.id);
               },
               child: AnimatedContainer(
                 duration: widget.theme.animationDuration,
@@ -241,77 +239,85 @@ class _IslandPillState extends State<IslandPill> {
   }
 
   Widget _buildExpandedContent(BuildContext context, IslandItem item) {
+    final Widget content;
     if (item.expandedBuilder != null) {
-      return item.expandedBuilder!(
+      content = item.expandedBuilder!(
         context,
         item,
         widget.theme,
         widget.controller.collapse,
       );
-    }
-
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Row(
-          children: [
-            if (item.leading != null) ...[
-              item.leading!,
-              const SizedBox(width: 12),
-            ],
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text(
-                    item.title,
-                    style: TextStyle(
-                      color: widget.theme.contentColor,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                  if (item.subtitle != null) ...[
-                    const SizedBox(height: 2),
+    } else {
+      content = Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              if (item.leading != null) ...[
+                item.leading!,
+                const SizedBox(width: 12),
+              ],
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
                     Text(
-                      item.subtitle!,
+                      item.title,
                       style: TextStyle(
-                        color: widget.theme.secondaryContentColor,
-                        fontSize: 13,
+                        color: widget.theme.contentColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
+                    if (item.subtitle != null) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        item.subtitle!,
+                        style: TextStyle(
+                          color: widget.theme.secondaryContentColor,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-            IconButton(
-              icon: Icon(Icons.close_rounded,
-                  color: widget.theme.secondaryContentColor, size: 20),
-              onPressed: widget.controller.collapse,
+              IconButton(
+                icon: Icon(Icons.close_rounded,
+                    color: widget.theme.secondaryContentColor, size: 20),
+                onPressed: widget.controller.collapse,
+              ),
+            ],
+          ),
+          if (item.actions.isNotEmpty) ...[
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: item.actions.map((act) {
+                return Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: FilledButton.tonal(
+                    onPressed: () {
+                      act.onPressed();
+                      widget.controller.collapse();
+                    },
+                    child: Text(act.label),
+                  ),
+                );
+              }).toList(),
             ),
           ],
-        ),
-        if (item.actions.isNotEmpty) ...[
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: item.actions.map((act) {
-              return Padding(
-                padding: const EdgeInsets.only(left: 8.0),
-                child: FilledButton.tonal(
-                  onPressed: () {
-                    act.onPressed();
-                    widget.controller.collapse();
-                  },
-                  child: Text(act.label),
-                ),
-              );
-            }).toList(),
-          ),
         ],
-      ],
+      );
+    }
+
+    // Absorb clicks inside the expanded card so they never close the card
+    return GestureDetector(
+      behavior: HitTestBehavior.opaque,
+      onTap: () {},
+      child: content,
     );
   }
 }
