@@ -730,4 +730,248 @@ class IslandItem {
       },
     );
   }
+
+  /// Creates a live ongoing VoIP / Phone Call island item.
+  factory IslandItem.call({
+    String id = 'active_call',
+    required String callerName,
+    required String durationText,
+    Widget? avatar,
+    bool isMuted = false,
+    Color accentColor = const Color(0xFF00E676),
+    VoidCallback? onMuteToggle,
+    VoidCallback? onEndCall,
+  }) {
+    return IslandItem(
+      id: id,
+      title: callerName,
+      subtitle: durationText,
+      priority: 15, // Highest priority
+      leading: avatar != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: SizedBox(width: 20, height: 20, child: avatar),
+            )
+          : Icon(Icons.call_rounded, size: 16, color: accentColor),
+      trailing: Text(
+        durationText,
+        style: TextStyle(
+          color: accentColor,
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+          fontFeatures: const [FontFeature.tabularFigures()],
+        ),
+      ),
+      splitBubble: Icon(Icons.call_rounded, size: 16, color: accentColor),
+      compactBuilder: (context, item, theme) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            item.leading!,
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                callerName,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: theme.contentColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            item.trailing!,
+          ],
+        );
+      },
+      expandedBuilder: (context, item, theme, collapse) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                CircleAvatar(
+                  radius: 24,
+                  backgroundColor: accentColor.withValues(alpha: 0.2),
+                  child: avatar ??
+                      Icon(Icons.person_rounded, color: accentColor, size: 28),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        callerName,
+                        style: TextStyle(
+                          color: theme.contentColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Ongoing Call • $durationText',
+                        style: TextStyle(
+                          color: theme.secondaryContentColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                if (onMuteToggle != null)
+                  IconButton.filledTonal(
+                    onPressed: onMuteToggle,
+                    icon: Icon(
+                      isMuted ? Icons.mic_off_rounded : Icons.mic_rounded,
+                      color: isMuted ? Colors.redAccent : Colors.white,
+                    ),
+                  ),
+                if (onEndCall != null)
+                  IconButton.filled(
+                    onPressed: () {
+                      collapse();
+                      onEndCall();
+                    },
+                    style: IconButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      foregroundColor: Colors.white,
+                    ),
+                    icon: const Icon(Icons.call_end_rounded),
+                  ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Creates a turn-by-turn Navigation or Ride Tracking island item (Uber / Google Maps style).
+  factory IslandItem.navigation({
+    String id = 'navigation',
+    required String destination,
+    required String etaText,
+    required String distanceText,
+    required String nextInstruction,
+    Color accentColor = const Color(0xFF29B6F6),
+    VoidCallback? onTap,
+    VoidCallback? onCancel,
+  }) {
+    return IslandItem(
+      id: id,
+      title: destination,
+      subtitle: '$etaText • $distanceText',
+      priority: 11,
+      leading: Icon(Icons.navigation_rounded, size: 16, color: accentColor),
+      trailing: Text(
+        etaText,
+        style: TextStyle(
+          color: accentColor,
+          fontSize: 12,
+          fontWeight: FontWeight.w700,
+        ),
+      ),
+      splitBubble: Icon(Icons.near_me_rounded, size: 16, color: accentColor),
+      compactBuilder: (context, item, theme) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            item.leading!,
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                '$etaText • $destination',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: theme.contentColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            item.trailing!,
+          ],
+        );
+      },
+      expandedBuilder: (context, item, theme, collapse) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: accentColor.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(Icons.turn_right_rounded,
+                      color: accentColor, size: 26),
+                ),
+                const SizedBox(width: 14),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        nextInstruction,
+                        style: TextStyle(
+                          color: theme.contentColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        '$destination • $distanceText',
+                        style: TextStyle(
+                          color: theme.secondaryContentColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      etaText,
+                      style: TextStyle(
+                        color: accentColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                    Text(
+                      'ETA',
+                      style: TextStyle(
+                        color: theme.secondaryContentColor,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
 }

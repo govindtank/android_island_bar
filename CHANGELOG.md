@@ -1,13 +1,20 @@
+## 0.2.0
+
+* **Cross-Platform Support (Android, iOS & Web):**
+  * Added native iOS Swift implementation detecting iPhone 14 Pro / 15 / 16 series Dynamic Island geometry (`safeAreaInsets.top >= 54pt`) and standard notch on iPhone X–14.
+  * Added Web implementation with zero-overhead fallback.
+  * Full platform support declared: Android, iOS, Web, macOS, Linux, and Windows.
+* **Universal Single API:**
+  * Added `IslandBar`, `IslandBarOverlay`, and `IslandBarController` aliases for clean, cross-platform codebases.
+* **New Production Scenarios:**
+  * Added `IslandItem.call` for VoIP & Cellular phone calls (duration counter, mute toggle, hangup button).
+  * Added `IslandItem.navigation` for Turn-by-Turn Rideshare and Maps tracking (ETA, maneuvers, distance).
+* **Live In-Browser Demo:** Deployed live interactive web showcase and camera cutout simulator to GitHub Pages.
+* **OSI-Approved MIT License & Funding links:** Added full MIT license and community donation links (GitHub Sponsors & Buy Me A Coffee).
+
 ## 0.1.0
 
-* **Initial Release of `android_island_bar`**
-* **Native DisplayCutout Snapping:** Android `WindowInsets` integration to detect and hug physical camera cutouts (center punch hole, left punch hole, teardrop notch, and floating mode).
-* **Multi-Task Split Mode:** Automatically splits into primary cutout pill and detached secondary floating bubble when concurrent tasks run (e.g., Music + Timer).
-* **Interactive Gestures & Physics:** Squishy rubber-band drag-to-expand, swipe-up to stash/dismiss, and haptic feedback.
-* **4 Built-In Live Presets:**
-  * `IslandItem.media`: Animated audio visualizer, album scrub, play/pause controls.
-  * `IslandItem.timer`: Circular progress ring with live countdown.
-  * `IslandItem.progress`: Download/upload progress bar with byte metrics.
-  * `IslandItem.alert`: Quick toast/snackbar replacement with actionable chips (e.g. OTP copy).
-* **Zero Risky Permissions:** Pure Flutter overlay architecture that complies 100% with Google Play Store policies.
-* **Global Bus Controller:** One-line programmatic control from anywhere via `AndroidIslandBar.show(...)`, `AndroidIslandBar.update(...)`, `AndroidIslandBar.dismiss()`.
+* Initial release of `android_island_bar`.
+* Native Android `DisplayCutout` snapping.
+* Multi-task concurrent split mode.
+* Fluid morphing container and presets (Media, Timer, Progress, Alert).

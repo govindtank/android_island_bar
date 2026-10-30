@@ -118,5 +118,43 @@ void main() {
       expect(controller.state, IslandState.hidden);
       expect(controller.primaryItem, isNull);
     });
+
+    test('showing a call item has top priority', () {
+      final call = IslandItem.call(
+        callerName: 'Alex Mercer',
+        durationText: '02:45',
+      );
+      final media = IslandItem.media(
+        title: 'Song',
+        artist: 'Artist',
+      );
+
+      controller.show(media);
+      controller.show(call);
+
+      expect(controller.primaryItem?.id, 'active_call');
+      expect(controller.state, IslandState.split);
+    });
+
+    test('showing a navigation item sets correct properties', () {
+      final nav = IslandItem.navigation(
+        destination: 'Airport',
+        etaText: '12 min',
+        distanceText: '5 mi',
+        nextInstruction: 'Turn left',
+      );
+
+      controller.show(nav);
+      expect(controller.primaryItem?.id, 'navigation');
+      expect(controller.primaryItem?.title, 'Airport');
+    });
+
+    test('universal alias IslandBar calls succeed', () {
+      IslandBar.clear();
+      expect(IslandBar.controller.items.isEmpty, isTrue);
+
+      IslandBar.show(IslandItem.alert(title: 'Test'));
+      expect(IslandBar.controller.state, IslandState.compact);
+    });
   });
 }

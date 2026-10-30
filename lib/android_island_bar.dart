@@ -3,6 +3,7 @@ import 'android_island_bar_platform_interface.dart';
 import 'src/controller/island_controller.dart';
 import 'src/models/cutout_info.dart';
 import 'src/models/island_item.dart';
+import 'src/widgets/island_overlay.dart';
 
 export 'src/controller/island_controller.dart';
 export 'src/models/cutout_info.dart';
@@ -146,6 +147,56 @@ class AndroidIslandBar {
     );
   }
 
+  /// Convenience shortcut to show an ongoing phone or VoIP call island.
+  static void showCall({
+    String id = 'active_call',
+    required String callerName,
+    required String durationText,
+    Widget? avatar,
+    bool isMuted = false,
+    Color accentColor = const Color(0xFF00E676),
+    VoidCallback? onMuteToggle,
+    VoidCallback? onEndCall,
+  }) {
+    controller.show(
+      IslandItem.call(
+        id: id,
+        callerName: callerName,
+        durationText: durationText,
+        avatar: avatar,
+        isMuted: isMuted,
+        accentColor: accentColor,
+        onMuteToggle: onMuteToggle,
+        onEndCall: onEndCall,
+      ),
+    );
+  }
+
+  /// Convenience shortcut to show a turn-by-turn navigation or rideshare tracking island.
+  static void showNavigation({
+    String id = 'navigation',
+    required String destination,
+    required String etaText,
+    required String distanceText,
+    required String nextInstruction,
+    Color accentColor = const Color(0xFF29B6F6),
+    VoidCallback? onTap,
+    VoidCallback? onCancel,
+  }) {
+    controller.show(
+      IslandItem.navigation(
+        id: id,
+        destination: destination,
+        etaText: etaText,
+        distanceText: distanceText,
+        nextInstruction: nextInstruction,
+        accentColor: accentColor,
+        onTap: onTap,
+        onCancel: onCancel,
+      ),
+    );
+  }
+
   /// Updates an active item in-place without resetting animations.
   static void update(IslandItem item) {
     controller.update(item);
@@ -181,3 +232,12 @@ class AndroidIslandBar {
     controller.stash();
   }
 }
+
+/// Universal cross-platform alias for [AndroidIslandBar] to use seamlessly across Android, iOS, and Web.
+typedef IslandBar = AndroidIslandBar;
+
+/// Universal cross-platform alias for [AndroidIslandBarOverlay].
+typedef IslandBarOverlay = AndroidIslandBarOverlay;
+
+/// Universal cross-platform alias for [AndroidIslandBarController].
+typedef IslandBarController = AndroidIslandBarController;

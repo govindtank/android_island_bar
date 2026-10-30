@@ -3,54 +3,165 @@
 <p align="center">
   <a href="https://pub.dev/packages/android_island_bar"><img src="https://img.shields.io/pub/v/android_island_bar.svg?style=flat-square&color=00E676" alt="Pub Version"></a>
   <a href="https://pub.dev/packages/android_island_bar/score"><img src="https://img.shields.io/pub/points/android_island_bar?style=flat-square&color=00B0FF" alt="Pub Points"></a>
-  <a href="https://github.com/govindtank/android_island_bar"><img src="https://img.shields.io/badge/platform-flutter%20%7C%20android-blue?style=flat-square" alt="Platform"></a>
-  <a href="https://github.com/govindtank/android_island_bar/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-Apache%202.0-blue.svg?style=flat-square" alt="License"></a>
-  <a href="https://github.com/govindtank/android_island_bar/stargazers"><img src="https://img.shields.io/github/stars/govindtank/android_island_bar?style=flat-square&color=FFD700" alt="GitHub Stars"></a>
+  <a href="https://govindtank.github.io/android_island_bar/"><img src="https://img.shields.io/badge/Live_Demo-Try_in_Browser-00E676?style=flat-square&logo=googlechrome&logoColor=white" alt="Live Demo"></a>
+  <a href="https://github.com/govindtank/android_island_bar"><img src="https://img.shields.io/badge/platform-android%20%7C%20ios%20%7C%20web%20%7C%20macos%20%7C%20windows-blue?style=flat-square" alt="Platform"></a>
+  <a href="https://github.com/govindtank/android_island_bar/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square" alt="License"></a>
+  <a href="https://buymeacoffee.com/govindtank"><img src="https://img.shields.io/badge/Donate-Buy%20Me%20A%20Coffee-yellow.svg?style=flat-square&logo=buymeacoffee" alt="Buy Me A Coffee"></a>
+  <a href="https://github.com/sponsors/govindtank"><img src="https://img.shields.io/badge/Sponsor-GitHub-ea4aaa.svg?style=flat-square&logo=githubsponsors" alt="GitHub Sponsors"></a>
 </p>
 
 <p align="center">
-  <strong>The True Hardware-Cutout Morphing Dynamic Island for Android &amp; Flutter.</strong><br>
-  Snaps directly to physical camera punch-holes with spring physics, multi-task split bubbles, and zero dangerous permissions.
+  <strong>Universal Cross-Platform Dynamic Island for Flutter (Android, iOS &amp; Web).</strong><br>
+  Snaps directly to physical camera punch-holes and iOS Dynamic Island geometries with spring morphing, multi-task concurrent split bubbles, rubber-band physics, and zero dangerous permissions.
 </p>
 
 ---
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/govindtank/android_island_bar/main/doc/assets/infographic.svg" width="100%" alt="Android Island Bar Architecture and Infographic" />
+  <a href="https://govindtank.github.io/android_island_bar/">
+    <img src="https://raw.githubusercontent.com/govindtank/android_island_bar/main/doc/assets/hero_showcase.svg" width="100%" alt="Android Island Bar Real-World Hardware Showcase" />
+  </a>
+</p>
+
+<p align="center">
+  🎮 <strong><a href="https://govindtank.github.io/android_island_bar/">Launch Live In-Browser Interactive Demo &amp; Cutout Simulator →</a></strong>
 </p>
 
 ---
 
-## ⚡ Why Developers Choose `android_island_bar`
+## 📱 Hardware Adaptation (Android &amp; iOS)
 
-Most "Dynamic Island" Flutter libraries are hardcoded for iPhone Pro dimensions. On Android, this looks awkward because physical screens feature diverse punch-hole cutouts (center, left-corner, teardrop notches).
+Unlike packages hardcoded to static coordinates, `android_island_bar` binds directly to physical device cutouts across operating systems:
 
-`android_island_bar` solves this with **native hardware integration and fluid physics**:
-
-* 🎯 **Hardware Cutout Auto-Snapping**: Queries Android's `DisplayCutout` (`WindowInsets`) to automatically hug and nest inside your device's camera hole (Center, Left-punch, Teardrop Notch, or Floating).
-* 🔀 **Multi-Task Split Mode**: When two tasks run simultaneously (e.g., Music + Countdown Timer), the island automatically morphs into a **Dual Split Island** — primary pill on the cutout + a detached secondary bubble.
-* 🧲 **Squishy Rubber-Band Drag &amp; Haptics**: Pull down with real drag dampening and spring snap-back. Swipe up to stash or collapse with light tactile haptics.
-* 📦 **4 Plug-and-Play Presets**:
-  * `IslandItem.media`: Procedural live audio equalizer visualizer, album scrub, play/pause.
-  * `IslandItem.timer`: Circular countdown spinner with tabular time figures.
-  * `IslandItem.progress`: Download/upload status bar with byte metrics.
-  * `IslandItem.alert`: Quick toast/snackbar replacement with actionable chips (e.g. "Copy OTP").
-* 🛡️ **Zero Dangerous Permissions**: Pure Flutter overlay layer. No `SYSTEM_ALERT_WINDOW` or accessibility services required — **100% Google Play Store safe**.
-* 🚀 **1-Line Global Bus**: Trigger or dismiss items from any widget, bloc, or service using `AndroidIslandBar.show(...)`.
+* **Android Hardware Snapping:** Queries `WindowInsetsCompat.getDisplayCutout()` to automatically position, size, and mask the physical camera lens inside the black island pill. Supports **Center Punch-Holes** (Samsung Galaxy S/A/M, Motorola Edge), **Left Corner Cutouts** (Pixel, OnePlus), and **Teardrop Notches**.
+* **iOS Dynamic Island Integration:** Auto-detects iPhone 14 Pro, 15, and 16 series (`safeAreaInsets.top >= 54pt`) to align pixel-perfect with Apple's physical Dynamic Island inside the app, and smoothly hugs the standard notch on iPhone X through 14.
+* **Web &amp; Desktop Fallback:** Floats seamlessly as an unobtrusive top-center status pill below window insets.
+* **Unified Single API:** Import `android_island_bar` and use either `IslandBar` or `AndroidIslandBar` across all targets with zero platform `if/else` checks.
 
 ---
 
-## 📊 Comparison Matrix
+## 🛠️ Real-World Production Scenarios
 
-| Feature | `android_island_bar` | Standard Dynamic Island Packages | Native Android `SYSTEM_ALERT_WINDOW` Apps |
-| :--- | :---: | :---: | :---: |
-| **Android DisplayCutout Snapping** | **Yes (Auto-adapts to lens)** | No (Hardcoded iOS coords) | Custom hacky service |
-| **Multi-Task Split Mode** | **Yes (Primary + Detached Bubble)** | No | Limited |
-| **Play Store Policy Safe** | **100% Safe (No risky permissions)** | Safe | High Rejection Risk |
-| **Built-in Presets** | **Media, Timer, Progress, Alert** | Custom only | Mixed |
-| **Live Audio Waveform Visualizer** | **Built-in Procedural Canvas** | No | No |
-| **Rubber-Band Physics &amp; Haptics** | **Yes** | Linear Animation | No |
-| **Cross-Platform Fallback** | **Android, iOS, Web, macOS, Desktop** | iOS only | Android only |
+### 1. Streaming Audio &amp; Podcasts (Spotify / Apple Music Style)
+
+Includes procedural equalizer visualizer bars that bounce when active, album scrub bar, and responsive controls.
+
+```dart
+IslandBar.showMedia(
+  title: 'Starboy (feat. Daft Punk)',
+  artist: 'The Weeknd',
+  isPlaying: true,
+  progress: 0.35,
+  positionText: '1:24',
+  durationText: '3:50',
+  accentColor: const Color(0xFF00E676),
+  onPlayPause: () => togglePlayPause(),
+  onNext: () => skipNext(),
+  onPrevious: () => skipPrevious(),
+);
+```
+
+### 2. Active VoIP &amp; Phone Calls (WhatsApp / Cellular Style)
+
+Displays caller avatar, ongoing duration counter, and quick mute / hangup actions. Higher priority ensures it retains primary island focus.
+
+```dart
+IslandBar.showCall(
+  callerName: 'Alex Mercer',
+  durationText: '04:12',
+  isMuted: false,
+  accentColor: const Color(0xFF00E676),
+  onMuteToggle: () => toggleMute(),
+  onEndCall: () {
+    IslandBar.dismiss('active_call');
+  },
+);
+```
+
+### 3. Turn-by-Turn Rideshare &amp; Navigation (Uber / Maps Style)
+
+Renders navigation maneuvers, remaining distance, and ETA chips in compact mode, expanding into an actionable route overview card.
+
+```dart
+IslandBar.showNavigation(
+  destination: 'San Francisco Int Airport',
+  etaText: '18 min',
+  distanceText: '12.4 mi',
+  nextInstruction: 'In 500 ft, Turn Right on 4th St',
+  accentColor: const Color(0xFF00B0FF),
+  onTap: () => openFullMap(),
+);
+```
+
+### 4. Countdown Timers &amp; Pomodoro
+
+Circular progress ring with tabular seconds countdown, pause/resume toggle, and cancel button.
+
+```dart
+IslandBar.showTimer(
+  id: 'cooking_timer',
+  label: 'Pasta Timer',
+  remaining: const Duration(minutes: 4, seconds: 20),
+  totalDuration: const Duration(minutes: 8),
+  isPaused: false,
+  accentColor: const Color(0xFFFF9100),
+  onPauseResume: () => toggleTimer(),
+  onCancel: () => IslandBar.dismiss('cooking_timer'),
+);
+```
+
+### 5. OTA Downloads &amp; Background File Transfers
+
+Linear progress indicator with byte velocity and percentage chip.
+
+```dart
+IslandBar.showProgress(
+  id: 'firmware_ota',
+  title: 'Firmware_v2.4.zip',
+  subtitle: '48.2 MB / 114 MB • 4.2 MB/s',
+  progress: 0.42,
+  accentColor: const Color(0xFF29B6F6),
+  onCancel: () => cancelDownload(),
+);
+```
+
+### 6. Actionable Alerts &amp; OTP Autofill
+
+Clean snackbar replacement with one-tap action chip (e.g. "Copy OTP") and configurable auto-dismiss.
+
+```dart
+IslandBar.showAlert(
+  title: 'Verification Code',
+  message: 'Your login code is 849201',
+  actionLabel: 'Copy 849201',
+  onAction: () => copyToClipboard('849201'),
+  duration: const Duration(seconds: 5),
+);
+```
+
+### 7. Multi-Tasking Concurrent Split Mode
+
+When two activities are active simultaneously (e.g., Music playback + an active Timer), the island automatically splits into a **Dual Split Island**:
+- The higher-priority task occupies the primary camera cutout pill.
+- The secondary task attaches as a detached floating circular bubble on the opposite side.
+- Tapping either bubble expands that specific task.
+
+```dart
+// Primary task (Music)
+IslandBar.show(IslandItem.media(...));
+
+// Pushing a second task automatically initiates Split Mode
+IslandBar.push(IslandItem.timer(...));
+```
+
+---
+
+## 🧲 Gestures &amp; Physics
+
+* **Tap:** Expands the compact pill into an interactive control card.
+* **Rubber-Band Drag Down:** Pulling down on the compact pill introduces fluid dampening resistance before snapping open with a spring curve.
+* **Swipe Up:** Collapses the expanded sheet, or stashes the compact pill into the camera cutout.
+* **Tactile Haptics:** Built-in `HapticFeedback.lightImpact()` fires upon expansion, collapse, and snap transitions.
 
 ---
 
@@ -60,10 +171,10 @@ Add `android_island_bar` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  android_island_bar: ^0.1.0
+  android_island_bar: ^0.2.0
 ```
 
-### 1. Wrap Your App in `MaterialApp.builder`
+Wrap your root application inside `MaterialApp.builder`:
 
 ```dart
 import 'package:flutter/material.dart';
@@ -78,8 +189,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       builder: (context, child) {
-        return AndroidIslandBarOverlay(
-          alignment: CutoutAlignment.auto, // Auto-hugs hardware camera cutout
+        return IslandBarOverlay(
+          alignment: CutoutAlignment.auto, // Auto-adapts to Android punch holes & iOS Dynamic Island
           child: child!,
         );
       },
@@ -91,84 +202,14 @@ class MyApp extends StatelessWidget {
 
 ---
 
-## 💡 Usage Examples
+## 🎨 Theme Customization
 
-### 1. Show Media Player with Animated Visualizer
-
-```dart
-AndroidIslandBar.showMedia(
-  title: 'Starboy (feat. Daft Punk)',
-  artist: 'The Weeknd',
-  isPlaying: true,
-  progress: 0.35,
-  positionText: '1:24',
-  durationText: '3:50',
-  onPlayPause: () => print('Toggled playback'),
-  onNext: () => print('Next track'),
-);
-```
-
-### 2. Show Countdown Timer
+Pass an `IslandTheme` to `IslandBarOverlay` to customize colors, spring curves, elevation, and paddings:
 
 ```dart
-AndroidIslandBar.showTimer(
-  id: 'cooking_timer',
-  label: 'Pasta Timer',
-  remaining: const Duration(minutes: 4, seconds: 20),
-  totalDuration: const Duration(minutes: 8),
-  onPauseResume: () => print('Timer paused/resumed'),
-  onCancel: () => AndroidIslandBar.dismiss('cooking_timer'),
-);
-```
-
-### 3. Show File Download / Upload Progress
-
-```dart
-AndroidIslandBar.showProgress(
-  id: 'firmware_update',
-  title: 'Downloading update.zip',
-  subtitle: '45 MB / 100 MB • 4.2 MB/s',
-  progress: 0.45,
-  onCancel: () => AndroidIslandBar.dismiss('firmware_update'),
-);
-```
-
-### 4. Show OTP / Notification Alert Chip
-
-```dart
-AndroidIslandBar.showAlert(
-  title: 'Verification Code',
-  message: 'Your OTP is 849201',
-  actionLabel: 'Copy OTP',
-  onAction: () {
-    // Copy code to clipboard
-  },
-  duration: const Duration(seconds: 5),
-);
-```
-
-### 5. Multi-Tasking Split Island (Concurrent Tasks)
-
-When you trigger multiple tasks, `android_island_bar` automatically splits the pill into a primary card and a detached secondary bubble:
-
-```dart
-// Start media playback
-AndroidIslandBar.show(IslandItem.media(...));
-
-// Add a timer concurrently -> Island morphs into Dual Split Mode!
-AndroidIslandBar.push(IslandItem.timer(...));
-```
-
----
-
-## 🎨 Custom Styling &amp; Theming
-
-Customize colors, elevation, border radius, spring curves, and padding using `IslandTheme`:
-
-```dart
-AndroidIslandBarOverlay(
+IslandBarOverlay(
   theme: const IslandTheme(
-    backgroundColor: Color(0xFF000000), // Pitch-black OLED cutout bleed
+    backgroundColor: Color(0xFF000000), // Pitch-black OLED cutout masking
     contentColor: Color(0xFFFFFFFF),
     accentColor: Color(0xFF00E676),
     compactHeight: 38.0,
@@ -182,35 +223,22 @@ AndroidIslandBarOverlay(
 
 ---
 
-## 📱 Hardware Cutout Alignment Options
+## 🛡️ Policy &amp; Permissions
 
-| Mode | Behavior |
-| :--- | :--- |
-| `CutoutAlignment.auto` | Auto-detects Android `DisplayCutout` and centers on the camera lens. |
-| `CutoutAlignment.centerPunch` | Forces alignment around center camera punch-hole (Samsung Galaxy S/A/M, Motorola Edge). |
-| `CutoutAlignment.leftPunch` | Aligns with offset left punch-hole (OnePlus, Pixel, Xiaomi). |
-| `CutoutAlignment.notch` | Seamlessly hugs top edge teardrop notch screens. |
-| `CutoutAlignment.floating` | Detached floating pill below status bar (ideal for tablets, foldables, or notchless devices). |
+* **100% Google Play Store &amp; App Store Safe:** Operates entirely within the Flutter widget tree overlay.
+* **No `SYSTEM_ALERT_WINDOW` or Accessibility permissions required:** General Play Store compliance with zero rejection risk.
 
 ---
 
-## 🧪 Testing and Verification
+## ☕ Support &amp; Donations
 
-Run tests:
+If this library saves you time or powers your application, consider supporting ongoing development:
 
-```bash
-flutter test
-```
-
-Run the example app:
-
-```bash
-cd example
-flutter run
-```
+* **Buy Me A Coffee:** [buymeacoffee.com/govindtank](https://buymeacoffee.com/govindtank)
+* **GitHub Sponsors:** [github.com/sponsors/govindtank](https://github.com/govindtank)
 
 ---
 
 ## 📄 License
 
-Apache License 2.0. Copyright (c) 2026 Govind Tank.
+MIT License. Copyright (c) 2026 Govind Tank.

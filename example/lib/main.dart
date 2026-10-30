@@ -181,6 +181,43 @@ class _IslandBarShowcaseAppState extends State<IslandBarShowcaseApp> {
     );
   }
 
+  void _triggerCall() {
+    AndroidIslandBar.showCall(
+      callerName: 'Alex Mercer',
+      durationText: '04:12',
+      isMuted: false,
+      accentColor: const Color(0xFF00E676),
+      onMuteToggle: () {
+        AndroidIslandBar.showAlert(
+          title: 'Microphone Muted',
+          message: 'Your audio is now muted',
+          duration: const Duration(seconds: 2),
+        );
+      },
+      onEndCall: () {
+        AndroidIslandBar.dismiss('active_call');
+        AndroidIslandBar.showAlert(
+          title: 'Call Ended',
+          message: 'Duration: 04:15',
+          duration: const Duration(seconds: 2),
+        );
+      },
+    );
+  }
+
+  void _triggerNavigation() {
+    AndroidIslandBar.showNavigation(
+      destination: 'San Francisco Int Airport',
+      etaText: '18 min',
+      distanceText: '12.4 mi',
+      nextInstruction: 'In 500 ft, Turn Right on 4th St',
+      accentColor: const Color(0xFF29B6F6),
+      onTap: () {
+        AndroidIslandBar.expand();
+      },
+    );
+  }
+
   void _triggerMultiTask() {
     _triggerMedia();
     Future.delayed(const Duration(milliseconds: 300), () {
@@ -345,6 +382,24 @@ class _IslandBarShowcaseAppState extends State<IslandBarShowcaseApp> {
               icon: Icons.security_rounded,
               color: const Color(0xFFE040FB),
               onTap: _triggerOTPAlert,
+            ),
+            const SizedBox(height: 10),
+
+            _buildPresetCard(
+              title: 'Ongoing VoIP / Phone Call',
+              subtitle: 'Active call pill, mute controls & end call',
+              icon: Icons.call_rounded,
+              color: const Color(0xFF00E676),
+              onTap: _triggerCall,
+            ),
+            const SizedBox(height: 10),
+
+            _buildPresetCard(
+              title: 'Navigation & Ride Tracking',
+              subtitle: 'Turn-by-turn guidance, ETA and distance metrics',
+              icon: Icons.navigation_rounded,
+              color: const Color(0xFF00B0FF),
+              onTap: _triggerNavigation,
             ),
             const SizedBox(height: 20),
 

@@ -1,16 +1,20 @@
 name: android_island_bar
 description: >-
-  A morphing Dynamic Island status bar for Android and Flutter with hardware punch-hole cutout auto-snapping, multi-task split mode, rubber-band drag, and presets.
-version: 0.1.0
+  Unified cross-platform Dynamic Island status bar for Android, iOS, and Web with hardware cutout snapping, multi-task split mode, rubber-band drag, and presets.
+version: 0.2.0
 homepage: https://github.com/govindtank/android_island_bar
 repository: https://github.com/govindtank/android_island_bar
 issue_tracker: https://github.com/govindtank/android_island_bar/issues
+
+funding:
+  - https://github.com/sponsors/govindtank
+  - https://buymeacoffee.com/govindtank
 
 topics:
   - dynamic-island
   - status-bar
   - android
-  - ui
+  - ios
   - notification
 
 environment:
@@ -20,7 +24,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_web_plugins:
+    sdk: flutter
   plugin_platform_interface: ^2.0.2
+  web: '>=0.5.1 <2.0.0'
 
 dev_dependencies:
   flutter_test:
@@ -32,4 +39,15 @@ flutter:
     platforms:
       android:
         package: io.github.govindtank.android_island_bar
+        pluginClass: AndroidIslandBarPlugin
+      ios:
+        pluginClass: AndroidIslandBarPlugin
+      web:
+        fileName: android_island_bar_web.dart
+        pluginClass: AndroidIslandBarWeb
+      macos:
+        pluginClass: AndroidIslandBarPlugin
+      windows:
+        pluginClass: AndroidIslandBarPluginCApi
+      linux:
         pluginClass: AndroidIslandBarPlugin
