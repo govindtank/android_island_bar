@@ -1,6 +1,8 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'android_island_bar_method_channel.dart';
+import 'src/models/battery_snapshot.dart';
 import 'src/models/cutout_info.dart';
+import 'src/models/media_snapshot.dart';
 
 /// The interface that platform-specific implementations of android_island_bar must extend.
 abstract class AndroidIslandBarPlatform extends PlatformInterface {
@@ -30,5 +32,26 @@ abstract class AndroidIslandBarPlatform extends PlatformInterface {
   /// Queries native Android DisplayCutout insets and bounding rectangles.
   Future<CutoutInfo> getCutoutInfo() {
     throw UnimplementedError('getCutoutInfo() has not been implemented.');
+  }
+
+  /// Queries real device battery percentage and charging telemetry.
+  Future<BatterySnapshot> getBatteryInfo() {
+    throw UnimplementedError('getBatteryInfo() has not been implemented.');
+  }
+
+  /// Returns the active Android media session, when notification access is granted.
+  Future<MediaSnapshot> getMediaSnapshot() {
+    throw UnimplementedError('getMediaSnapshot() has not been implemented.');
+  }
+
+  /// Opens Android notification access settings for the app.
+  Future<void> openMediaAccessSettings() {
+    throw UnimplementedError(
+        'openMediaAccessSettings() has not been implemented.');
+  }
+
+  /// Sends a transport command to the current media session.
+  Future<void> controlMedia(String action) {
+    throw UnimplementedError('controlMedia() has not been implemented.');
   }
 }

@@ -1,29 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
 import 'package:android_island_bar_example/main.dart';
+import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  testWidgets('Verify IslandBarShowcaseApp loads and renders presets', (
+  testWidgets('Flux Island loads real device cockpit and tabs', (
     WidgetTester tester,
   ) async {
-    await tester.pumpWidget(const IslandBarShowcaseApp());
-    await tester.pumpAndSettle();
+    await tester.pumpWidget(const FluxIslandApp());
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300));
 
-    expect(find.text('Android Island Bar'), findsOneWidget);
-    expect(find.text('Live Media Player'), findsOneWidget);
-    expect(find.text('Countdown Timer'), findsOneWidget);
-
-    // Scroll to see the multi-task card
-    final scrollable = find.byType(Scrollable);
-    expect(scrollable, findsOneWidget);
-
-    await tester.scrollUntilVisible(
-      find.text('Multi-Task Split Mode'),
-      200.0,
-      scrollable: scrollable,
-    );
-    await tester.pumpAndSettle();
-
-    expect(find.text('Multi-Task Split Mode'), findsOneWidget);
+    expect(find.text('FLUX ISLAND'), findsOneWidget);
+    expect(find.text('Island Hub'), findsOneWidget);
+    expect(find.text('Cutout Tuner'), findsOneWidget);
+    expect(find.text('Themes'), findsOneWidget);
+    expect(find.text('Real Hardware Telemetry'), findsOneWidget);
+    expect(find.text('System Clipboard'), findsOneWidget);
   });
 }

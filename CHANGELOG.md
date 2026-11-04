@@ -1,3 +1,9 @@
+## 0.3.0
+
+* **Live Media & Battery Snapshots**: Added `MediaSnapshot` and `BatterySnapshot` models and listener bindings for live system events.
+* **Android 14/15 Cutout Hardening**: Hardened cutout detection and edge-to-edge overlay bounds on modern Android devices.
+* **Cleaned Package Distribution**: Added `.pubignore` to exclude local Gradle and build caches.
+
 ## 0.2.3
 
 * **Pure Component Showcase Graphics:** Redesigned `hero_showcase.svg` to showcase the actual isolated island components directly from the example (Media, Timer, Split Bubble, VoIP Call, Navigation, Progress, and OTP Alert) with guaranteed boundary clearance and zero container overlapping.

@@ -56,6 +56,18 @@ class AndroidIslandBarController extends ChangeNotifier {
     return _cutoutInfo;
   }
 
+  /// Reloads the host cutout after the first Android insets pass or rotation.
+  Future<CutoutInfo> refreshCutoutInfo() async {
+    try {
+      _cutoutInfo = await AndroidIslandBarPlatform.instance.getCutoutInfo();
+      _cutoutLoaded = true;
+      notifyListeners();
+    } catch (_) {
+      _cutoutInfo = CutoutInfo.empty;
+    }
+    return _cutoutInfo;
+  }
+
   /// Displays an [IslandItem]. If another item exists, enters split mode.
   void show(IslandItem item) {
     final existingIndex = _items.indexWhere((it) => it.id == item.id);

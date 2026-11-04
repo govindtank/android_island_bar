@@ -1,0 +1,14 @@
+.dart_tool/
+.packages
+build/
+.idea/
+*.iml
+.DS_Store
+.github/
+.gradle/
+example/.dart_tool/
+example/build/
+example/.packages
+example/android/.gradle/
+example/android/app/build/
+example/android/.kotlin/

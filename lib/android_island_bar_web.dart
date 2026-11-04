@@ -2,6 +2,7 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 import 'package:web/web.dart' as web;
 
 import 'android_island_bar_platform_interface.dart';
+import 'src/models/battery_snapshot.dart';
 import 'src/models/cutout_info.dart';
 
 /// A web implementation of the AndroidIslandBarPlatform of the AndroidIslandBar plugin.
@@ -23,5 +24,15 @@ class AndroidIslandBarWeb extends AndroidIslandBarPlatform {
   @override
   Future<CutoutInfo> getCutoutInfo() async {
     return CutoutInfo.empty;
+  }
+
+  @override
+  Future<BatterySnapshot> getBatteryInfo() async {
+    return const BatterySnapshot(
+      percent: 85,
+      isCharging: false,
+      temperatureC: 28.0,
+      isFastCharge: false,
+    );
   }
 }

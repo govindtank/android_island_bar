@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'android_island_bar_platform_interface.dart';
 import 'src/controller/island_controller.dart';
+import 'src/models/battery_snapshot.dart';
 import 'src/models/cutout_info.dart';
+import 'src/models/media_snapshot.dart';
 import 'src/models/island_item.dart';
 import 'src/widgets/island_overlay.dart';
 
 export 'src/controller/island_controller.dart';
+export 'src/models/battery_snapshot.dart';
 export 'src/models/cutout_info.dart';
+export 'src/models/media_snapshot.dart';
 export 'src/models/island_item.dart';
 export 'src/models/island_theme.dart';
 export 'src/models/island_types.dart';
@@ -31,6 +35,26 @@ class AndroidIslandBar {
   /// Queries Android DisplayCutout insets and bounding rectangles.
   static Future<CutoutInfo> getCutoutInfo() {
     return AndroidIslandBarPlatform.instance.getCutoutInfo();
+  }
+
+  /// Queries real device battery percentage and charging telemetry.
+  static Future<BatterySnapshot> getBatteryInfo() {
+    return AndroidIslandBarPlatform.instance.getBatteryInfo();
+  }
+
+  /// Queries the current Android media session, if notification access is enabled.
+  static Future<MediaSnapshot> getMediaSnapshot() {
+    return AndroidIslandBarPlatform.instance.getMediaSnapshot();
+  }
+
+  /// Opens Android notification access settings so the user can connect players.
+  static Future<void> openMediaAccessSettings() {
+    return AndroidIslandBarPlatform.instance.openMediaAccessSettings();
+  }
+
+  /// Sends a transport command to the currently active media player.
+  static Future<void> controlMedia(String action) {
+    return AndroidIslandBarPlatform.instance.controlMedia(action);
   }
 
   /// Displays an [IslandItem] in the island bar.

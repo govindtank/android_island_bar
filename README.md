@@ -11,8 +11,8 @@
 </p>
 
 <p align="center">
-  <strong>Universal Cross-Platform Dynamic Island for Flutter (Android, iOS &amp; Web).</strong><br>
-  Snaps directly to physical camera punch-holes and iOS Dynamic Island geometries with spring morphing, multi-task concurrent split bubbles, rubber-band physics, and zero dangerous permissions.
+  <strong>Universal cross-platform island overlay for Flutter (Android, iOS &amp; Web).</strong><br>
+  Anchors to real Android DisplayCutout geometry, supports spring morphing and multi-task split bubbles, and stays inside the app window without overlay or accessibility access.
 </p>
 
 ---
@@ -165,7 +165,64 @@ IslandBar.push(IslandItem.timer(...));
 
 ---
 
+## ⚡ Flux Island — Next-Gen Android Smart Island App
+
+**Flux** is the changing stream of media, timers, and signals. **Island** is the calm anchor that keeps that stream glanceable.
+
+### 🌟 Key Real-World Features & Youth Innovations:
+
+1. **🎵 Universal Media HUD & Lo-Fi Sound Engine:**
+   - Synchronizes seamlessly with active Android media players (Spotify, YouTube Music, Apple Music, Poweramp) via `MediaSessionManager`.
+   - Built-in **4 Ambient Focus Soundscapes** (🌧️ Cyber Rainstorm, ☕ Midnight Tokyo Cafe, 🌊 Deep Space Drift, 🎧 Sunset Highway) with real-time procedural equalizer visualizer bars, progress scrubber, and full playback controls.
+
+2. **⚡ Turbo Charge Fluid Surge HUD:**
+   - Simulates 68W TurboPower liquid power surge with animated battery indicators, charging speed wattage, battery health, and thermal monitoring.
+
+3. **📋 Magic Clipboard Drop (Context-Aware Intelligence):**
+   - Automatically monitors copied text and pops a contextual action chip:
+     - **URLs:** Direct 1-tap "Open in Chrome" & "Share".
+     - **Color Hex (`#10B981`):** Live color swatch chip preview.
+     - **2FA OTP Codes:** 1-tap clean paste button.
+     - **Plain Text:** Text-to-speech speak aloud and word count analysis.
+
+4. **🐾 Interactive Notch Pet (Viral Island Companion):**
+   - Choose between **Mochi the Cat** (🐱), **Bolt the Pup** (🐶), **Cosmo the Alien** (👾), or **Spooky the Ghost** (👻) living right on the camera punch-hole.
+   - Interactive gestures: tap to pet (heart particles burst), feed snacks 🐟, play ball 🎾, and sleep mode 💤.
+
+5. **📐 Hardware Cutout Calibrator (Precision Pixel Tuner):**
+   - Interactive visual tuner with sliders for Vertical Y-Offset, Horizontal X-Offset, Compact Min Width, and Pill Height.
+   - Live real-time preview allowing users to hug punch-holes and notches on Motorola, Samsung, Pixel, and OnePlus devices down to the exact pixel.
+
+6. **⏱️ Multi-Task Dual Split-Bubble Mode:**
+   - Independent concurrent bubbles: active countdown timer in the left bubble and animated music visualizer or notch pet in the right bubble.
+
+7. **🎨 5 Tailored Pro Palettes (OLED Contrast, Zero Dimness):**
+   - **⚡ Cyber Lime:** OLED Pitch Black, Neon Lime (`#CBFF4D`), Electric Cyan (`#38D9F5`).
+   - **🌌 Tokyo Night:** Deep Indigo, Neon Purple (`#A78BFA`), Ice Blue (`#60A5FA`).
+   - **🌅 Sunset Glow:** Obsidian, Hot Coral (`#FB7185`), Warm Amber (`#FBBF24`).
+   - **🍃 Matrix Emerald:** Pure Black, Toxic Mint (`#34D399`), Jade Glow.
+   - **☀️ Ceramic Light:** Porcelain White (`#F4F6F9`), Deep Midnight Slate, Electric Cobalt.
+
+8. **🔦 Quick Tools:**
+   - Dynamic torch beam with brightness adjustment and emergency SOS strobe pulse.
+
+### Run & Verify the Application
+
+```bash
+cd example
+flutter pub get
+flutter test
+flutter run
+```
+
+### Android media access
+
+Flux Island does not scrape notifications or use an overlay permission. On Android, the example declares a permission-gated `NotificationListenerService` so `MediaSessionManager` can read and control the active player. The user must enable **Flux Island media access** in Android notification access settings; turning it off disables the media feature.
+
+---
+
 ## 🚀 Getting Started
+
 
 Add `android_island_bar` to your `pubspec.yaml`:
 
@@ -225,8 +282,9 @@ IslandBarOverlay(
 
 ## 🛡️ Policy &amp; Permissions
 
-* **100% Google Play Store &amp; App Store Safe:** Operates entirely within the Flutter widget tree overlay.
-* **No `SYSTEM_ALERT_WINDOW` or Accessibility permissions required:** General Play Store compliance with zero rejection risk.
+* **In-app overlay:** No `SYSTEM_ALERT_WINDOW` or Accessibility permission is required; the island is rendered inside the Flutter app window.
+* **Media feature:** Android notification access is optional, explicitly enabled by the user, and required only to read/control active media sessions.
+* **Honest data boundary:** Media metadata is read locally and is not uploaded by this plugin.
 
 ---
 

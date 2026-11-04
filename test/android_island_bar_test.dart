@@ -23,6 +23,27 @@ class MockAndroidIslandBarPlatform
           rects: [Rect.fromLTWH(180, 0, 40, 36)],
         ),
       );
+
+  @override
+  Future<BatterySnapshot> getBatteryInfo() => Future.value(
+        const BatterySnapshot(
+          percent: 78,
+          isCharging: true,
+          temperatureC: 32.5,
+          isFastCharge: true,
+        ),
+      );
+
+  @override
+  Future<MediaSnapshot> getMediaSnapshot() => Future.value(
+        const MediaSnapshot(accessGranted: false, hasSession: false),
+      );
+
+  @override
+  Future<void> openMediaAccessSettings() async {}
+
+  @override
+  Future<void> controlMedia(String action) async {}
 }
 
 void main() {
