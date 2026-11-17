@@ -1,3 +1,10 @@
+## 0.4.0
+
+* **Ride-Hailing Live Activity Preset (`IslandItem.rideHailing`)**: Turnkey live activity for Uber, Ola, and Rapido with driver rating, vehicle details, live ETA counter, prominent pickup OTP chip (`OTP 4921`), and "Call Driver" CTA button.
+* **Food Delivery Live Tracking Preset (`IslandItem.foodDelivery`)**: Turnkey live order tracking for Swiggy, Zomato, and DoorDash with restaurant branding, order progress updates, and delivery partner badge.
+* **Upgraded Hero Showcase Graphic**: Re-rendered `hero_showcase.svg` featuring the new Ride-Hailing OTP island and Food Delivery tracking pill with zero text clipping.
+* **Expanded Test Suite**: Added dedicated unit and widget tests for live activity factory presets.
+
 ## 0.3.0
 
 * **Live Media & Battery Snapshots**: Added `MediaSnapshot` and `BatterySnapshot` models and listener bindings for live system events.

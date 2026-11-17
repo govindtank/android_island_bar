@@ -974,4 +974,338 @@ class IslandItem {
       },
     );
   }
+
+  /// Creates a live activity island item for ride-hailing services (Uber, Ola, Rapido).
+  factory IslandItem.rideHailing({
+    String id = 'ride_hailing',
+    required String driverName,
+    required String vehicleName,
+    required String licensePlate,
+    required String etaText,
+    required String otpCode,
+    double rating = 4.9,
+    Color accentColor = const Color(0xFF10B981),
+    VoidCallback? onTap,
+    VoidCallback? onCallDriver,
+    VoidCallback? onCancel,
+  }) {
+    return IslandItem(
+      id: id,
+      title: vehicleName,
+      subtitle: '$licensePlate • OTP $otpCode',
+      priority: 12,
+      onTap: onTap,
+      leading: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: accentColor.withAlpha(40),
+          shape: BoxShape.circle,
+        ),
+        child: Icon(Icons.local_taxi_rounded, size: 14, color: accentColor),
+      ),
+      trailing: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+        decoration: BoxDecoration(
+          color: const Color(0xFF1E293B),
+          borderRadius: BorderRadius.circular(4),
+          border: Border.all(color: accentColor.withAlpha(80)),
+        ),
+        child: Text(
+          'OTP $otpCode',
+          style: TextStyle(
+            color: accentColor,
+            fontSize: 10,
+            fontWeight: FontWeight.w800,
+            fontFamily: 'monospace',
+          ),
+        ),
+      ),
+      splitBubble:
+          Icon(Icons.directions_car_rounded, size: 16, color: accentColor),
+      compactBuilder: (context, item, theme) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            item.leading!,
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                '$etaText • $licensePlate',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: theme.contentColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            item.trailing!,
+          ],
+        );
+      },
+      expandedBuilder: (context, item, theme, collapse) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: accentColor.withAlpha(30),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.local_taxi_rounded,
+                      size: 20, color: accentColor),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        '$driverName • ★ $rating',
+                        style: TextStyle(
+                          color: theme.contentColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '$vehicleName • $licensePlate',
+                        style: TextStyle(
+                          color: theme.secondaryContentColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF030712),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: accentColor),
+                  ),
+                  child: Column(
+                    children: [
+                      const Text(
+                        'PICKUP OTP',
+                        style: TextStyle(
+                            fontSize: 8,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey),
+                      ),
+                      Text(
+                        otpCode,
+                        style: TextStyle(
+                          color: accentColor,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w900,
+                          fontFamily: 'monospace',
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 12),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E293B),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Row(
+                children: [
+                  Icon(Icons.access_time_rounded, size: 14, color: accentColor),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Arriving in $etaText',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: theme.contentColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  if (onCallDriver != null) ...[
+                    InkWell(
+                      onTap: onCallDriver,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: accentColor,
+                          borderRadius: BorderRadius.circular(6),
+                        ),
+                        child: const Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(Icons.call, size: 12, color: Colors.black),
+                            SizedBox(width: 4),
+                            Text('Call',
+                                style: TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black)),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  /// Creates a live activity island item for food delivery tracking (Swiggy, Zomato, DoorDash).
+  factory IslandItem.foodDelivery({
+    String id = 'food_delivery',
+    required String restaurantName,
+    required String orderStatus,
+    required String etaText,
+    String? itemSummary,
+    String? driverName,
+    Color accentColor = const Color(0xFFF59E0B),
+    VoidCallback? onTap,
+    VoidCallback? onTrackLive,
+  }) {
+    return IslandItem(
+      id: id,
+      title: restaurantName,
+      subtitle: '$orderStatus • $etaText',
+      priority: 12,
+      onTap: onTap,
+      leading: Container(
+        padding: const EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          color: accentColor.withAlpha(40),
+          shape: BoxShape.circle,
+        ),
+        child:
+            Icon(Icons.delivery_dining_rounded, size: 14, color: accentColor),
+      ),
+      trailing: Text(
+        etaText,
+        style: TextStyle(
+          color: accentColor,
+          fontSize: 11.5,
+          fontWeight: FontWeight.w800,
+        ),
+      ),
+      splitBubble:
+          Icon(Icons.takeout_dining_rounded, size: 16, color: accentColor),
+      compactBuilder: (context, item, theme) {
+        return Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            item.leading!,
+            const SizedBox(width: 8),
+            Flexible(
+              child: Text(
+                '$restaurantName • $orderStatus',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  color: theme.contentColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            item.trailing!,
+          ],
+        );
+      },
+      expandedBuilder: (context, item, theme, collapse) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: accentColor.withAlpha(30),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.two_wheeler_rounded,
+                      size: 20, color: accentColor),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        restaurantName,
+                        style: TextStyle(
+                          color: theme.contentColor,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        itemSummary != null
+                            ? '$itemSummary • $orderStatus'
+                            : orderStatus,
+                        style: TextStyle(
+                          color: theme.secondaryContentColor,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  etaText,
+                  style: TextStyle(
+                    color: accentColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+            if (driverName != null) ...[
+              const SizedBox(height: 10),
+              Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E293B),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  children: [
+                    const Icon(Icons.person_pin_circle_rounded,
+                        size: 14, color: Colors.grey),
+                    const SizedBox(width: 6),
+                    Text(
+                      'Partner: $driverName',
+                      style:
+                          const TextStyle(fontSize: 11, color: Colors.white70),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ],
+        );
+      },
+    );
+  }
 }

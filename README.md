@@ -78,7 +78,35 @@ IslandBar.showCall(
 );
 ```
 
-### 3. Turn-by-Turn Rideshare &amp; Navigation (Uber / Maps Style)
+### 3. Ride-Hailing Live Activity (Uber / Ola / Rapido Style)
+
+Live driver tracking with pickup OTP chip, vehicle details, ETA countdown, and direct call action.
+
+```dart
+IslandBar.showRideHailing(
+  driverName: 'Rajesh K.',
+  vehicleName: 'White Dzire',
+  licensePlate: 'MH 02 DE 4421',
+  etaText: '3 mins',
+  otpCode: '4921',
+  onCallDriver: () => callDriver(),
+);
+```
+
+### 4. Food Delivery Live Tracking (Swiggy / Zomato Style)
+
+Track order cooking and delivery partner location in real-time.
+
+```dart
+IslandBar.showFoodDelivery(
+  restaurantName: 'Truffles',
+  orderStatus: 'Out for delivery',
+  etaText: '14 mins',
+  driverName: 'Vikram (★ 4.8)',
+);
+```
+
+### 5. Turn-by-Turn Rideshare &amp; Navigation (Google Maps Style)
 
 Renders navigation maneuvers, remaining distance, and ETA chips in compact mode, expanding into an actionable route overview card.
 

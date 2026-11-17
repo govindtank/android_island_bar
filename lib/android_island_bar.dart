@@ -221,6 +221,64 @@ class AndroidIslandBar {
     );
   }
 
+  /// Displays a live activity island for ride-hailing services (Uber, Ola, Rapido).
+  static void showRideHailing({
+    String id = 'ride_hailing',
+    required String driverName,
+    required String vehicleName,
+    required String licensePlate,
+    required String etaText,
+    required String otpCode,
+    double rating = 4.9,
+    Color accentColor = const Color(0xFF10B981),
+    VoidCallback? onTap,
+    VoidCallback? onCallDriver,
+    VoidCallback? onCancel,
+  }) {
+    controller.show(
+      IslandItem.rideHailing(
+        id: id,
+        driverName: driverName,
+        vehicleName: vehicleName,
+        licensePlate: licensePlate,
+        etaText: etaText,
+        otpCode: otpCode,
+        rating: rating,
+        accentColor: accentColor,
+        onTap: onTap,
+        onCallDriver: onCallDriver,
+        onCancel: onCancel,
+      ),
+    );
+  }
+
+  /// Displays a live activity island for food delivery tracking (Swiggy, Zomato, DoorDash).
+  static void showFoodDelivery({
+    String id = 'food_delivery',
+    required String restaurantName,
+    required String orderStatus,
+    required String etaText,
+    String? itemSummary,
+    String? driverName,
+    Color accentColor = const Color(0xFFF59E0B),
+    VoidCallback? onTap,
+    VoidCallback? onTrackLive,
+  }) {
+    controller.show(
+      IslandItem.foodDelivery(
+        id: id,
+        restaurantName: restaurantName,
+        orderStatus: orderStatus,
+        etaText: etaText,
+        itemSummary: itemSummary,
+        driverName: driverName,
+        accentColor: accentColor,
+        onTap: onTap,
+        onTrackLive: onTrackLive,
+      ),
+    );
+  }
+
   /// Updates an active item in-place without resetting animations.
   static void update(IslandItem item) {
     controller.update(item);
