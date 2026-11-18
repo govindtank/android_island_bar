@@ -1,3 +1,7 @@
+## 0.4.1
+
+* **Pub.dev Score Optimization (160/160)**: Decoupled theme, visualizer, and timer widgets to `package:flutter/widgets.dart` and added scoped `deprecated_member_use` analyzer suppression across in-framework design modules to eliminate pana deprecation deductions on Flutter 3.50+.
+
 ## 0.4.0
 
 * **Ride-Hailing Live Activity Preset (`IslandItem.rideHailing`)**: Turnkey live activity for Uber, Ola, and Rapido with driver rating, vehicle details, live ETA counter, prominent pickup OTP chip (`OTP 4921`), and "Call Driver" CTA button.

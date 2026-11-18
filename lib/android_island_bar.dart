@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'android_island_bar_platform_interface.dart';
 import 'src/controller/island_controller.dart';
 import 'src/models/battery_snapshot.dart';

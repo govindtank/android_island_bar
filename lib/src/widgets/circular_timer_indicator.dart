@@ -1,5 +1,5 @@
 import 'dart:math' as math;
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// Circular progress ring with an inner icon or timer countdown value.
 class CircularTimerIndicator extends StatelessWidget {

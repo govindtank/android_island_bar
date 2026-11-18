@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 /// Styling and animation parameters for the island bar.
 class IslandTheme {

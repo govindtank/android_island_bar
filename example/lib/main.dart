@@ -270,9 +270,8 @@ class _FluxIslandAppState extends State<FluxIslandApp>
   // Real Media Island Actions
   // ---------------------------------------------------------------------------
   void _publishSystemMediaIsland(MediaSnapshot snapshot) {
-    final title = snapshot.title.trim().isEmpty
-        ? 'Playing Audio'
-        : snapshot.title.trim();
+    final title =
+        snapshot.title.trim().isEmpty ? 'Playing Audio' : snapshot.title.trim();
     final artist = snapshot.artist.trim().isEmpty
         ? snapshot.appLabel
         : snapshot.artist.trim();
@@ -324,9 +323,8 @@ class _FluxIslandAppState extends State<FluxIslandApp>
         _battery.isCharging
             ? Icons.battery_charging_full_rounded
             : Icons.battery_std_rounded,
-        color: _battery.percent > 20
-            ? const Color(0xFF00FF87)
-            : Colors.redAccent,
+        color:
+            _battery.percent > 20 ? const Color(0xFF00FF87) : Colors.redAccent,
         size: 18,
       ),
       compactBuilder: (context, item, theme) => Row(
@@ -386,8 +384,8 @@ class _FluxIslandAppState extends State<FluxIslandApp>
                     Text(
                       _battery.isCharging
                           ? (_battery.isFastCharge
-                                ? 'Fast Charging Connected'
-                                : 'Charging')
+                              ? 'Fast Charging Connected'
+                              : 'Charging')
                           : 'On Battery Power',
                       style: const TextStyle(
                         color: Colors.white,
@@ -450,8 +448,7 @@ class _FluxIslandAppState extends State<FluxIslandApp>
       return;
     }
 
-    final isUrl =
-        _currentClipboardText.startsWith('http://') ||
+    final isUrl = _currentClipboardText.startsWith('http://') ||
         _currentClipboardText.startsWith('https://');
     final snippet = _currentClipboardText.length > 28
         ? '${_currentClipboardText.substring(0, 28)}...'
@@ -840,9 +837,8 @@ class _FluxIslandAppState extends State<FluxIslandApp>
           statusBarColor: Colors.transparent,
           systemNavigationBarColor: Colors.transparent,
           statusBarIconBrightness: isDark ? Brightness.light : Brightness.dark,
-          systemNavigationBarIconBrightness: isDark
-              ? Brightness.light
-              : Brightness.dark,
+          systemNavigationBarIconBrightness:
+              isDark ? Brightness.light : Brightness.dark,
         ),
         child: AndroidIslandBarOverlay(
           alignment: _calibrationAlignment,
@@ -911,68 +907,70 @@ class _FluxIslandAppState extends State<FluxIslandApp>
   // TAB 1: ISLAND HUB (REAL DATA ONLY)
   // ---------------------------------------------------------------------------
   Widget _buildIslandHub() => CustomScrollView(
-    slivers: [
-      SliverToBoxAdapter(child: _buildHeader()),
-      SliverToBoxAdapter(child: _buildSystemMediaCard()),
-      SliverToBoxAdapter(
-        child: _buildSectionTitle('Real Hardware Telemetry', 'DEVICE SENSORS'),
-      ),
-      SliverToBoxAdapter(child: _buildRealBatteryCard()),
-      SliverToBoxAdapter(
-        child: _buildSectionTitle('System Clipboard', 'COPY / PASTE INSPECTOR'),
-      ),
-      SliverToBoxAdapter(child: _buildRealClipboardCard()),
-      SliverToBoxAdapter(
-        child: _buildSectionTitle('Island Utilities', 'STOPWATCH & TIMERS'),
-      ),
-      SliverToBoxAdapter(child: _buildUtilitiesRow()),
-      const SliverToBoxAdapter(child: SizedBox(height: 28)),
-    ],
-  );
+        slivers: [
+          SliverToBoxAdapter(child: _buildHeader()),
+          SliverToBoxAdapter(child: _buildSystemMediaCard()),
+          SliverToBoxAdapter(
+            child:
+                _buildSectionTitle('Real Hardware Telemetry', 'DEVICE SENSORS'),
+          ),
+          SliverToBoxAdapter(child: _buildRealBatteryCard()),
+          SliverToBoxAdapter(
+            child: _buildSectionTitle(
+                'System Clipboard', 'COPY / PASTE INSPECTOR'),
+          ),
+          SliverToBoxAdapter(child: _buildRealClipboardCard()),
+          SliverToBoxAdapter(
+            child: _buildSectionTitle('Island Utilities', 'STOPWATCH & TIMERS'),
+          ),
+          SliverToBoxAdapter(child: _buildUtilitiesRow()),
+          const SliverToBoxAdapter(child: SizedBox(height: 28)),
+        ],
+      );
 
   Widget _buildHeader() => Padding(
-    padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
-    child: Row(
-      children: [
-        const FluxMark(size: 42),
-        const SizedBox(width: 14),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'FLUX ISLAND',
-                style: _activeTheme.textTheme.titleMedium?.copyWith(
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 1.8,
-                  color: _activeTheme.colorScheme.onSurface,
-                ),
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
+        child: Row(
+          children: [
+            const FluxMark(size: 42),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'FLUX ISLAND',
+                    style: _activeTheme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w900,
+                      letterSpacing: 1.8,
+                      color: _activeTheme.colorScheme.onSurface,
+                    ),
+                  ),
+                  Text(
+                    _systemMedia.hasSession
+                        ? 'Syncing ${_systemMedia.appLabel}'
+                        : (_mediaLoading
+                            ? 'Connecting Android media...'
+                            : 'Real System Bridge Active'),
+                    style: _activeTheme.textTheme.bodySmall?.copyWith(
+                      color: _activeTheme.colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
-              Text(
-                _systemMedia.hasSession
-                    ? 'Syncing ${_systemMedia.appLabel}'
-                    : (_mediaLoading
-                          ? 'Connecting Android media...'
-                          : 'Real System Bridge Active'),
-                style: _activeTheme.textTheme.bodySmall?.copyWith(
-                  color: _activeTheme.colorScheme.onSurfaceVariant,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ],
-          ),
+            ),
+            IconButton.filledTonal(
+              onPressed: () {
+                AndroidIslandBar.expand();
+                _showToast('Island expanded');
+              },
+              tooltip: 'Expand Island',
+              icon: const Icon(Icons.open_in_full_rounded, size: 20),
+            ),
+          ],
         ),
-        IconButton.filledTonal(
-          onPressed: () {
-            AndroidIslandBar.expand();
-            _showToast('Island expanded');
-          },
-          tooltip: 'Expand Island',
-          icon: const Icon(Icons.open_in_full_rounded, size: 20),
-        ),
-      ],
-    ),
-  );
+      );
 
   Widget _buildSystemMediaCard() {
     final hasSession = _systemMedia.hasSession;
@@ -1003,8 +1001,8 @@ class _FluxIslandAppState extends State<FluxIslandApp>
                     hasSession
                         ? 'PLAYING IN ${_systemMedia.appLabel.toUpperCase()}'
                         : (access
-                              ? 'MEDIA BRIDGE CONNECTED'
-                              : 'NOTIFICATION ACCESS REQUIRED'),
+                            ? 'MEDIA BRIDGE CONNECTED'
+                            : 'NOTIFICATION ACCESS REQUIRED'),
                     style: TextStyle(
                       color: _activeTheme.colorScheme.onSurfaceVariant,
                       fontWeight: FontWeight.w800,
@@ -1138,551 +1136,552 @@ class _FluxIslandAppState extends State<FluxIslandApp>
   }
 
   Widget _buildRealBatteryCard() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Row(
-          children: [
-            Container(
-              width: 52,
-              height: 52,
-              decoration: BoxDecoration(
-                color: const Color(0xFF00FF87).withValues(alpha: .15),
-                shape: BoxShape.circle,
-              ),
-              child: Icon(
-                _battery.isCharging
-                    ? Icons.battery_charging_full_rounded
-                    : Icons.battery_std_rounded,
-                color: const Color(0xFF00FF87),
-                size: 28,
-              ),
-            ),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Row(
+              children: [
+                Container(
+                  width: 52,
+                  height: 52,
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF00FF87).withValues(alpha: .15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(
+                    _battery.isCharging
+                        ? Icons.battery_charging_full_rounded
+                        : Icons.battery_std_rounded,
+                    color: const Color(0xFF00FF87),
+                    size: 28,
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        _battery.percent >= 0
-                            ? '${_battery.percent}%'
-                            : 'Reading...',
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 6,
-                          vertical: 2,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF00FF87).withValues(alpha: .2),
-                          borderRadius: BorderRadius.circular(6),
-                        ),
-                        child: Text(
-                          _battery.isCharging ? 'CHARGING' : 'DISCHARGING',
-                          style: const TextStyle(
-                            color: Color(0xFF00FF87),
-                            fontSize: 9,
-                            fontWeight: FontWeight.w900,
+                      Row(
+                        children: [
+                          Text(
+                            _battery.percent >= 0
+                                ? '${_battery.percent}%'
+                                : 'Reading...',
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w900,
+                            ),
                           ),
+                          const SizedBox(width: 8),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 6,
+                              vertical: 2,
+                            ),
+                            decoration: BoxDecoration(
+                              color:
+                                  const Color(0xFF00FF87).withValues(alpha: .2),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              _battery.isCharging ? 'CHARGING' : 'DISCHARGING',
+                              style: const TextStyle(
+                                color: Color(0xFF00FF87),
+                                fontSize: 9,
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${_battery.temperatureC > 0 ? '${_battery.temperatureC.toStringAsFixed(1)}°C · ' : ''}Real Android BatteryManager',
+                        style: TextStyle(
+                          color: _activeTheme.colorScheme.onSurfaceVariant,
+                          fontSize: 12,
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${_battery.temperatureC > 0 ? '${_battery.temperatureC.toStringAsFixed(1)}°C · ' : ''}Real Android BatteryManager',
-                    style: TextStyle(
-                      color: _activeTheme.colorScheme.onSurfaceVariant,
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+                FilledButton.tonal(
+                  onPressed: _showBatteryIsland,
+                  child: const Text('Island HUD'),
+                ),
+              ],
             ),
-            FilledButton.tonal(
-              onPressed: _showBatteryIsland,
-              child: const Text('Island HUD'),
-            ),
-          ],
+          ),
         ),
-      ),
-    ),
-  );
+      );
 
   Widget _buildRealClipboardCard() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: Card(
-      child: Padding(
-        padding: const EdgeInsets.all(18),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Icon(
-                  Icons.content_paste_rounded,
-                  color: Color(0xFF38D9F5),
-                  size: 20,
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.content_paste_rounded,
+                      color: Color(0xFF38D9F5),
+                      size: 20,
+                    ),
+                    const SizedBox(width: 10),
+                    Text(
+                      'CURRENT CLIPBOARD',
+                      style: TextStyle(
+                        color: _activeTheme.colorScheme.onSurfaceVariant,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 11,
+                        letterSpacing: 1.2,
+                      ),
+                    ),
+                    const Spacer(),
+                    IconButton(
+                      icon: const Icon(Icons.refresh_rounded, size: 18),
+                      onPressed: _pollClipboard,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 10),
+                const SizedBox(height: 10),
                 Text(
-                  'CURRENT CLIPBOARD',
+                  _currentClipboardText.trim().isEmpty
+                      ? 'Clipboard is currently empty on this device.'
+                      : _currentClipboardText,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    color: _activeTheme.colorScheme.onSurfaceVariant,
-                    fontWeight: FontWeight.w800,
-                    fontSize: 11,
-                    letterSpacing: 1.2,
+                    color: _activeTheme.colorScheme.onSurface,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
                   ),
                 ),
-                const Spacer(),
-                IconButton(
-                  icon: const Icon(Icons.refresh_rounded, size: 18),
-                  onPressed: _pollClipboard,
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
+                const SizedBox(height: 14),
+                Row(
+                  children: [
+                    FilledButton.tonalIcon(
+                      onPressed: _showClipboardIsland,
+                      icon: const Icon(Icons.bubble_chart_rounded, size: 16),
+                      label: const Text('Show in Island'),
+                    ),
+                    const SizedBox(width: 10),
+                    OutlinedButton(
+                      onPressed: () {
+                        Clipboard.setData(const ClipboardData(text: ''));
+                        setState(() => _currentClipboardText = '');
+                        _showToast('Clipboard cleared');
+                      },
+                      child: const Text('Clear'),
+                    ),
+                  ],
                 ),
               ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              _currentClipboardText.trim().isEmpty
-                  ? 'Clipboard is currently empty on this device.'
-                  : _currentClipboardText,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                color: _activeTheme.colorScheme.onSurface,
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
+          ),
+        ),
+      );
+
+  Widget _buildUtilitiesRow() => Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Row(
+          children: [
+            Expanded(
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.hourglass_top_rounded,
+                        color: Color(0xFFA78BFA),
+                        size: 24,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Countdown Timer',
+                        style: _activeTheme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        _timerActive
+                            ? '${_timerSecondsRemaining ~/ 60}:${(_timerSecondsRemaining % 60).toString().padLeft(2, '0')}'
+                            : '$_timerMinutes min',
+                        style: TextStyle(
+                          color: _activeTheme.colorScheme.onSurfaceVariant,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      FilledButton.tonal(
+                        onPressed: _toggleCountdownTimer,
+                        child: Text(_timerActive ? 'Pause' : 'Start'),
+                      ),
+                    ],
+                  ),
+                ),
               ),
             ),
-            const SizedBox(height: 14),
-            Row(
-              children: [
-                FilledButton.tonalIcon(
-                  onPressed: _showClipboardIsland,
-                  icon: const Icon(Icons.bubble_chart_rounded, size: 16),
-                  label: const Text('Show in Island'),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(16),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.timer_outlined,
+                        color: Color(0xFFFBBF24),
+                        size: 24,
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'Precision Stopwatch',
+                        style: _activeTheme.textTheme.titleSmall?.copyWith(
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        '${_stopwatchElapsedSeconds ~/ 60}:${(_stopwatchElapsedSeconds % 60).toString().padLeft(2, '0')}',
+                        style: TextStyle(
+                          color: _activeTheme.colorScheme.onSurfaceVariant,
+                          fontSize: 12,
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                      FilledButton.tonal(
+                        onPressed: _toggleStopwatch,
+                        child: Text(_stopwatchActive ? 'Pause' : 'Start'),
+                      ),
+                    ],
+                  ),
                 ),
-                const SizedBox(width: 10),
-                OutlinedButton(
-                  onPressed: () {
-                    Clipboard.setData(const ClipboardData(text: ''));
-                    setState(() => _currentClipboardText = '');
-                    _showToast('Clipboard cleared');
-                  },
-                  child: const Text('Clear'),
-                ),
-              ],
+              ),
             ),
           ],
         ),
-      ),
-    ),
-  );
-
-  Widget _buildUtilitiesRow() => Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 20),
-    child: Row(
-      children: [
-        Expanded(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.hourglass_top_rounded,
-                    color: Color(0xFFA78BFA),
-                    size: 24,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Countdown Timer',
-                    style: _activeTheme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    _timerActive
-                        ? '${_timerSecondsRemaining ~/ 60}:${(_timerSecondsRemaining % 60).toString().padLeft(2, '0')}'
-                        : '$_timerMinutes min',
-                    style: TextStyle(
-                      color: _activeTheme.colorScheme.onSurfaceVariant,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  FilledButton.tonal(
-                    onPressed: _toggleCountdownTimer,
-                    child: Text(_timerActive ? 'Pause' : 'Start'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Card(
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Icon(
-                    Icons.timer_outlined,
-                    color: Color(0xFFFBBF24),
-                    size: 24,
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    'Precision Stopwatch',
-                    style: _activeTheme.textTheme.titleSmall?.copyWith(
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '${_stopwatchElapsedSeconds ~/ 60}:${(_stopwatchElapsedSeconds % 60).toString().padLeft(2, '0')}',
-                    style: TextStyle(
-                      color: _activeTheme.colorScheme.onSurfaceVariant,
-                      fontSize: 12,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  FilledButton.tonal(
-                    onPressed: _toggleStopwatch,
-                    child: Text(_stopwatchActive ? 'Pause' : 'Start'),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ],
-    ),
-  );
+      );
 
   // ---------------------------------------------------------------------------
   // TAB 2: HARDWARE CUTOUT CALIBRATOR
   // ---------------------------------------------------------------------------
   Widget _buildCutoutCalibrator() => ListView(
-    padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
-    children: [
-      Text(
-        'Cutout Calibrator',
-        style: _activeTheme.textTheme.headlineMedium?.copyWith(
-          fontWeight: FontWeight.w900,
-        ),
-      ),
-      const SizedBox(height: 6),
-      Text(
-        'Fine-tune the floating island position to match your phone’s camera cutout.',
-        style: TextStyle(color: _activeTheme.colorScheme.onSurfaceVariant),
-      ),
-      const SizedBox(height: 20),
-      Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Hardware Cutout Insets (Detected)',
-                style: TextStyle(fontWeight: FontWeight.w800),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Top Inset: ${_detectedCutout.safeInsetTop.toStringAsFixed(1)} dp · Type: ${_detectedCutout.cutoutType.name.toUpperCase()}',
-                style: TextStyle(
-                  color: _selectedTheme.primary,
-                  fontWeight: FontWeight.w700,
-                  fontSize: 12,
-                ),
-              ),
-              const SizedBox(height: 14),
-              Wrap(
-                spacing: 8,
-                runSpacing: 8,
-                children: CutoutAlignment.values.map((a) {
-                  final isSel = _calibrationAlignment == a;
-                  return ChoiceChip(
-                    label: Text(a.name.toUpperCase()),
-                    selected: isSel,
-                    selectedColor: _selectedTheme.primary,
-                    onSelected: (_) =>
-                        setState(() => _calibrationAlignment = a),
-                  );
-                }).toList(),
-              ),
-            ],
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+        children: [
+          Text(
+            'Cutout Calibrator',
+            style: _activeTheme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.w900,
+            ),
           ),
-        ),
-      ),
-      const SizedBox(height: 12),
-      Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Vertical Top Offset',
-                    style: TextStyle(fontWeight: FontWeight.w800),
-                  ),
-                  Text(
-                    '${_topOffset.toStringAsFixed(1)} dp',
-                    style: TextStyle(
-                      color: _selectedTheme.primary,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ],
-              ),
-              Slider(
-                value: _topOffset,
-                min: -15.0,
-                max: 35.0,
-                activeColor: _selectedTheme.primary,
-                onChanged: (v) => setState(() => _topOffset = v),
-              ),
-              const Divider(color: Colors.white10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Horizontal X Offset',
-                    style: TextStyle(fontWeight: FontWeight.w800),
-                  ),
-                  Text(
-                    '${_horizontalOffset.toStringAsFixed(1)} dp',
-                    style: TextStyle(
-                      color: _selectedTheme.primary,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ],
-              ),
-              Slider(
-                value: _horizontalOffset,
-                min: -50.0,
-                max: 50.0,
-                activeColor: _selectedTheme.primary,
-                onChanged: (v) => setState(() => _horizontalOffset = v),
-              ),
-              const Divider(color: Colors.white10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text(
-                    'Pill Width',
-                    style: TextStyle(fontWeight: FontWeight.w800),
-                  ),
-                  Text(
-                    '${_compactWidth.round()} dp',
-                    style: TextStyle(
-                      color: _selectedTheme.primary,
-                      fontWeight: FontWeight.w900,
-                    ),
-                  ),
-                ],
-              ),
-              Slider(
-                value: _compactWidth,
-                min: 100.0,
-                max: 220.0,
-                activeColor: _selectedTheme.primary,
-                onChanged: (v) => setState(() => _compactWidth = v),
-              ),
-            ],
+          const SizedBox(height: 6),
+          Text(
+            'Fine-tune the floating island position to match your phone’s camera cutout.',
+            style: TextStyle(color: _activeTheme.colorScheme.onSurfaceVariant),
           ),
-        ),
-      ),
-      const SizedBox(height: 16),
-      OutlinedButton.icon(
-        onPressed: () {
-          setState(() {
-            _topOffset = 0.0;
-            _horizontalOffset = 0.0;
-            _compactWidth = 152.0;
-            _compactHeight = 38.0;
-            _cornerRadius = 24.0;
-            _calibrationAlignment = CutoutAlignment.auto;
-          });
-          _showToast('Calibrator reset to auto-detect');
-        },
-        icon: const Icon(Icons.restart_alt_rounded),
-        label: const Text('Reset Calibration'),
-      ),
-    ],
-  );
+          const SizedBox(height: 20),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Hardware Cutout Insets (Detected)',
+                    style: TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Top Inset: ${_detectedCutout.safeInsetTop.toStringAsFixed(1)} dp · Type: ${_detectedCutout.cutoutType.name.toUpperCase()}',
+                    style: TextStyle(
+                      color: _selectedTheme.primary,
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Wrap(
+                    spacing: 8,
+                    runSpacing: 8,
+                    children: CutoutAlignment.values.map((a) {
+                      final isSel = _calibrationAlignment == a;
+                      return ChoiceChip(
+                        label: Text(a.name.toUpperCase()),
+                        selected: isSel,
+                        selectedColor: _selectedTheme.primary,
+                        onSelected: (_) =>
+                            setState(() => _calibrationAlignment = a),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Vertical Top Offset',
+                        style: TextStyle(fontWeight: FontWeight.w800),
+                      ),
+                      Text(
+                        '${_topOffset.toStringAsFixed(1)} dp',
+                        style: TextStyle(
+                          color: _selectedTheme.primary,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Slider(
+                    value: _topOffset,
+                    min: -15.0,
+                    max: 35.0,
+                    activeColor: _selectedTheme.primary,
+                    onChanged: (v) => setState(() => _topOffset = v),
+                  ),
+                  const Divider(color: Colors.white10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Horizontal X Offset',
+                        style: TextStyle(fontWeight: FontWeight.w800),
+                      ),
+                      Text(
+                        '${_horizontalOffset.toStringAsFixed(1)} dp',
+                        style: TextStyle(
+                          color: _selectedTheme.primary,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Slider(
+                    value: _horizontalOffset,
+                    min: -50.0,
+                    max: 50.0,
+                    activeColor: _selectedTheme.primary,
+                    onChanged: (v) => setState(() => _horizontalOffset = v),
+                  ),
+                  const Divider(color: Colors.white10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      const Text(
+                        'Pill Width',
+                        style: TextStyle(fontWeight: FontWeight.w800),
+                      ),
+                      Text(
+                        '${_compactWidth.round()} dp',
+                        style: TextStyle(
+                          color: _selectedTheme.primary,
+                          fontWeight: FontWeight.w900,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Slider(
+                    value: _compactWidth,
+                    min: 100.0,
+                    max: 220.0,
+                    activeColor: _selectedTheme.primary,
+                    onChanged: (v) => setState(() => _compactWidth = v),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          OutlinedButton.icon(
+            onPressed: () {
+              setState(() {
+                _topOffset = 0.0;
+                _horizontalOffset = 0.0;
+                _compactWidth = 152.0;
+                _compactHeight = 38.0;
+                _cornerRadius = 24.0;
+                _calibrationAlignment = CutoutAlignment.auto;
+              });
+              _showToast('Calibrator reset to auto-detect');
+            },
+            icon: const Icon(Icons.restart_alt_rounded),
+            label: const Text('Reset Calibration'),
+          ),
+        ],
+      );
 
   // ---------------------------------------------------------------------------
   // TAB 3: THEMES & ARCHITECTURE
   // ---------------------------------------------------------------------------
   Widget _buildSettingsStudio() => ListView(
-    padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
-    children: [
-      Text(
-        'Studio & Themes',
-        style: _activeTheme.textTheme.headlineMedium?.copyWith(
-          fontWeight: FontWeight.w900,
-        ),
-      ),
-      const SizedBox(height: 6),
-      Text(
-        'High-contrast palettes with true OLED pitch-black fidelity.',
-        style: TextStyle(color: _activeTheme.colorScheme.onSurfaceVariant),
-      ),
-      const SizedBox(height: 20),
-      Card(
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Theme Palette',
-                style: TextStyle(fontWeight: FontWeight.w800),
-              ),
-              const SizedBox(height: 14),
-              ...AppThemePreset.values.map((preset) {
-                final isSel = _selectedTheme == preset;
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: InkWell(
-                    onTap: () => setState(() => _selectedTheme = preset),
-                    borderRadius: BorderRadius.circular(14),
-                    child: Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: isSel
-                            ? preset.primary.withValues(alpha: .15)
-                            : Colors.transparent,
+        padding: const EdgeInsets.fromLTRB(20, 20, 20, 32),
+        children: [
+          Text(
+            'Studio & Themes',
+            style: _activeTheme.textTheme.headlineMedium?.copyWith(
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'High-contrast palettes with true OLED pitch-black fidelity.',
+            style: TextStyle(color: _activeTheme.colorScheme.onSurfaceVariant),
+          ),
+          const SizedBox(height: 20),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Theme Palette',
+                    style: TextStyle(fontWeight: FontWeight.w800),
+                  ),
+                  const SizedBox(height: 14),
+                  ...AppThemePreset.values.map((preset) {
+                    final isSel = _selectedTheme == preset;
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 8),
+                      child: InkWell(
+                        onTap: () => setState(() => _selectedTheme = preset),
                         borderRadius: BorderRadius.circular(14),
-                        border: Border.all(
-                          color: isSel ? preset.primary : Colors.white12,
+                        child: Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isSel
+                                ? preset.primary.withValues(alpha: .15)
+                                : Colors.transparent,
+                            borderRadius: BorderRadius.circular(14),
+                            border: Border.all(
+                              color: isSel ? preset.primary : Colors.white12,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: preset.primary,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: preset.secondary,
+                                  shape: BoxShape.circle,
+                                ),
+                              ),
+                              const SizedBox(width: 14),
+                              Expanded(
+                                child: Text(
+                                  preset.label,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                                ),
+                              ),
+                              if (isSel)
+                                Icon(
+                                  Icons.check_circle_rounded,
+                                  color: preset.primary,
+                                ),
+                            ],
+                          ),
                         ),
                       ),
-                      child: Row(
-                        children: [
-                          Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: preset.primary,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-                          Container(
-                            width: 28,
-                            height: 28,
-                            decoration: BoxDecoration(
-                              color: preset.secondary,
-                              shape: BoxShape.circle,
-                            ),
-                          ),
-                          const SizedBox(width: 14),
-                          Expanded(
-                            child: Text(
-                              preset.label,
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w800,
-                              ),
-                            ),
-                          ),
-                          if (isSel)
-                            Icon(
-                              Icons.check_circle_rounded,
-                              color: preset.primary,
-                            ),
-                        ],
+                    );
+                  }),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Card(
+            child: Padding(
+              padding: const EdgeInsets.all(18),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Row(
+                    children: [
+                      Icon(Icons.shield_outlined, color: Color(0xFFCBFF4D)),
+                      SizedBox(width: 10),
+                      Text(
+                        'System Overlay Architecture',
+                        style: TextStyle(fontWeight: FontWeight.w900),
                       ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Flux Island runs cleanly as an in-window hardware cutout overlay with zero privacy risks. '
+                    'For floating above external third-party apps on Android, SYSTEM_ALERT_WINDOW can be authorized via Android Settings.',
+                    style: TextStyle(
+                      color: _activeTheme.colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                      height: 1.4,
                     ),
                   ),
-                );
-              }),
-            ],
-          ),
-        ),
-      ),
-      const SizedBox(height: 16),
-      Card(
-        child: Padding(
-          padding: const EdgeInsets.all(18),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Row(
-                children: [
-                  Icon(Icons.shield_outlined, color: Color(0xFFCBFF4D)),
-                  SizedBox(width: 10),
-                  Text(
-                    'System Overlay Architecture',
-                    style: TextStyle(fontWeight: FontWeight.w900),
+                  const SizedBox(height: 14),
+                  FilledButton.tonalIcon(
+                    onPressed: () => AndroidIslandBar.openMediaAccessSettings(),
+                    icon: const Icon(Icons.settings_suggest_rounded),
+                    label: const Text('Manage Android Media Access'),
                   ),
                 ],
               ),
-              const SizedBox(height: 8),
-              Text(
-                'Flux Island runs cleanly as an in-window hardware cutout overlay with zero privacy risks. '
-                'For floating above external third-party apps on Android, SYSTEM_ALERT_WINDOW can be authorized via Android Settings.',
-                style: TextStyle(
-                  color: _activeTheme.colorScheme.onSurfaceVariant,
-                  fontSize: 12,
-                  height: 1.4,
-                ),
-              ),
-              const SizedBox(height: 14),
-              FilledButton.tonalIcon(
-                onPressed: () => AndroidIslandBar.openMediaAccessSettings(),
-                icon: const Icon(Icons.settings_suggest_rounded),
-                label: const Text('Manage Android Media Access'),
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
-    ],
-  );
+        ],
+      );
 
   Widget _buildSectionTitle(String title, String eyebrow) => Padding(
-    padding: const EdgeInsets.fromLTRB(20, 24, 20, 10),
-    child: Row(
-      children: [
-        Text(
-          title,
-          style: _activeTheme.textTheme.titleMedium?.copyWith(
-            fontWeight: FontWeight.w900,
-            color: _activeTheme.colorScheme.onSurface,
-          ),
+        padding: const EdgeInsets.fromLTRB(20, 24, 20, 10),
+        child: Row(
+          children: [
+            Text(
+              title,
+              style: _activeTheme.textTheme.titleMedium?.copyWith(
+                fontWeight: FontWeight.w900,
+                color: _activeTheme.colorScheme.onSurface,
+              ),
+            ),
+            const Spacer(),
+            Text(
+              eyebrow,
+              style: TextStyle(
+                color: _activeTheme.colorScheme.onSurfaceVariant,
+                fontSize: 10,
+                letterSpacing: 1.3,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ],
         ),
-        const Spacer(),
-        Text(
-          eyebrow,
-          style: TextStyle(
-            color: _activeTheme.colorScheme.onSurfaceVariant,
-            fontSize: 10,
-            letterSpacing: 1.3,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      ],
-    ),
-  );
+      );
 }
